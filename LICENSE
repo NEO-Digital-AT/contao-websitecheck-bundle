@@ -1,0 +1,163 @@
+NEO Website Check — Software License Agreement
+Copyright (c) 2026 NEO Digital (neo-digital.at). All rights reserved.
+
+English version below. In case of doubt, the German version prevails.
+
+=============================================================================
+DEUTSCH
+=============================================================================
+
+1. Rechteinhaber
+   Die Software (Quelltext, Vorlagen, Stylesheets, Skripte, Übersetzungen und
+   Dokumentation) ist urheberrechtlich geschützt. Alle Rechte liegen bei
+   NEO Digital. Diese Lizenz verkauft keine Rechte an der Software, sondern
+   räumt ein Nutzungsrecht ein.
+
+2. Nutzungsrecht
+   NEO Digital räumt ein nicht ausschließliches und nicht übertragbares Recht
+   ein, die Software auf beliebig vielen Websites einzusetzen.
+
+   Ohne Lizenzschlüssel ist der Einsatz unentgeltlich, mit den Funktionen der
+   Gratisfassung: Prüfung und Ergebnis auf der Website, KI-Bewertung,
+   PDF-Bericht und E-Mail samt ihrer Gestaltung; die E-Mail mit dem
+   PDF-Bericht geht nur an den Betreiber der Website, nicht an den Besucher,
+   und eine Newsletter-Anmeldung gibt es nicht. Bedingung: Der Hinweis der
+   Software („powered by“ mit dem Logo bzw. dem Namen NEO und Link auf
+   https://neo-digital.at) im Element, auf jeder Seite des PDF-Berichts und in
+   der E-Mail bleibt sichtbar und unverändert. Fehlt der Hinweis, erlischt
+   das Nutzungsrecht für diese Website.
+
+   Ein Einsatz ohne diesen Hinweis setzt einen gültigen Lizenzschlüssel des
+   Lizenzdienstes von NEO Digital für die Domain der Website voraus. Mit ihm
+   entfällt der Hinweis auf dieser Website, die E-Mail mit dem PDF-Bericht
+   geht an den Besucher, und die Newsletter-Anmeldung steht zur Verfügung.
+   Umfang und Laufzeit ergeben sich aus der erworbenen Lizenz.
+
+   Maßgeblich ist die Fassung der Software, die zum Zeitpunkt der Bestellung
+   (bei unentgeltlicher Nutzung: des Herunterladens) für die dann aktuelle
+   Long-Term-Support-Version von Contao bereitsteht. Diese Fassung
+   funktioniert mit dieser Contao-Version bis zu deren End of Life laut dem
+   Release-Plan von Contao, unter den in der Dokumentation genannten
+   Voraussetzungen; Fehler der Software, die das verhindern, behebt NEO
+   Digital in dieser Zeit. Das gilt auch, wenn inzwischen neuere
+   Long-Term-Support-Versionen von Contao erschienen sind. Ein Anspruch auf
+   weitere Updates, auf neue Fassungen oder auf eine Fassung für eine spätere
+   Long-Term-Support-Version von Contao besteht nicht, auch nicht während
+   einer bezahlten Lizenz. NEO Digital kann solche Fassungen nach eigenem
+   Ermessen bereitstellen. Support ist nicht Teil der Lizenz und setzt eine
+   gesonderte Vereinbarung mit NEO Digital voraus.
+
+3. Erlaubt ist
+   a) die Installation und Einrichtung nach Ziffer 2;
+   b) die Anpassung von Konfiguration, Vorlagen, Stylesheets und Texten sowie
+      Änderungen am Code für die eigenen Installationen;
+   c) für Agenturen die Installation für ihre Kunden nach Ziffer 2.
+
+4. Nicht erlaubt ist
+   a) die Weitergabe, Veröffentlichung, Vermietung oder der Verkauf der
+      Software oder veränderter Fassungen, ausgenommen die Installation nach
+      Ziffer 3 c;
+   b) die Vergabe von Unterlizenzen;
+   c) das Anbieten der Software oder wesentlicher Teile davon als eigenes
+      Produkt oder als Dienst für Dritte;
+   d) das Entfernen oder Verändern von Urheber- und Lizenzhinweisen;
+   e) das Entfernen, Ausblenden, Verdecken oder Verändern des Hinweises nach
+      Ziffer 2 ohne gültigen Lizenzschlüssel, auch durch Stylesheets, Vorlagen
+      oder Änderungen am Code.
+
+5. Fremdkomponenten
+   Mitgelieferte oder vorausgesetzte Komponenten Dritter (z. B. Contao, Symfony, Dompdf, die Schrift Arimo (SIL Open Font License 1.1))
+   unterliegen ihren eigenen Lizenzen.
+
+6. Gewährleistung und Haftung
+   Ohne Lizenzschlüssel wird die Software unentgeltlich und im vorliegenden
+   Zustand bereitgestellt; zugesagt ist nur die Funktion nach Ziffer 2. Die
+   Haftung für leichte Fahrlässigkeit ist ausgeschlossen, soweit gesetzlich
+   zulässig; ausgenommen sind Personenschäden. Für Inhalte externer Dienste
+   (z. B. Antworten eines KI-Modells) und für Kosten bei gewählten
+   Drittanbietern übernimmt NEO Digital keine Haftung.
+
+7. Recht und Gerichtsstand
+   Es gilt österreichisches Recht unter Ausschluss der Verweisungsnormen und
+   des UN-Kaufrechts. Gerichtsstand ist Graz, soweit gesetzlich zulässig.
+
+Lizenzen und Fragen: https://store.neo-digital.at/extensions/website-check
+
+=============================================================================
+ENGLISH
+=============================================================================
+
+1. Ownership
+   The software (source code, templates, stylesheets, scripts, translations
+   and documentation) is protected by copyright. All rights remain with
+   NEO Digital. This license does not sell any rights in the software; it
+   grants a right of use.
+
+2. Right of use
+   NEO Digital grants a non-exclusive and non-transferable right to use the
+   software on any number of websites.
+
+   Without a licence key, use is free of charge, with the functions of the
+   free edition: the check and the result on the website, the AI review, the
+   PDF report and the e-mail with their design; the e-mail with the PDF
+   report goes to the website operator only, not to the visitor, and there is
+   no newsletter sign-up. Condition: the credit line of the software
+   ("powered by" with the logo or the name NEO and a link to
+   https://neo-digital.at) in the element, on every page of the PDF report and
+   in the e-mail stays visible and unchanged. Without the credit line, the
+   right of use for that website ends.
+
+   Use without the credit line requires a valid licence key of the licence
+   service of NEO Digital for the domain of the website. With it, the credit
+   line is left out on that website, the e-mail with the PDF report goes to
+   the visitor, and the newsletter sign-up is available. Scope and term follow
+   from the licence purchased.
+
+   The relevant version is the version of the software that is available, at
+   the time of the order (for free use: of the download), for the Contao
+   long-term support version current at that time. That version works with
+   that Contao version until its end of life according to Contao's release
+   plan, under the requirements stated in the documentation; NEO Digital
+   fixes errors of the software that prevent this during that time. This also
+   applies when newer Contao long-term support versions have been released in
+   the meantime. There is no entitlement to further updates, to new versions
+   or to a version for a later Contao long-term support version, not even
+   during a paid licence. NEO Digital may provide such versions at its own
+   discretion. Support is not part of the licence and requires a separate
+   agreement with NEO Digital.
+
+3. You may
+   a) install and configure the software under section 2;
+   b) adapt configuration, templates, stylesheets and texts and modify the
+      code for your own installations;
+   c) as an agency, install it for your clients under section 2.
+
+4. You may not
+   a) distribute, publish, rent or sell the software or modified versions,
+      except installing it under section 3 c;
+   b) grant sublicenses;
+   c) offer the software or substantial parts of it as your own product or as
+      a service to third parties;
+   d) remove or alter copyright and license notices;
+   e) remove, hide, cover or alter the credit line under section 2 without a
+      valid licence key, including by stylesheets, templates or changes to
+      the code.
+
+5. Third-party components
+   Third-party components that are shipped or required (e.g. Contao, Symfony, Dompdf, the Arimo font (SIL Open Font License 1.1))
+   are subject to their own licenses.
+
+6. Warranty and liability
+   Without a licence key, the software is provided free of charge and as is;
+   only the function under section 2 is committed. Liability for slight
+   negligence is excluded to the extent permitted by law; personal injury is
+   excepted. NEO Digital is not liable for content from external services
+   (e.g. answers of an AI model) or for costs incurred with chosen
+   third-party providers.
+
+7. Governing law and venue
+   Austrian law applies, excluding its conflict-of-law rules and the
+   UN Convention on Contracts for the International Sale of Goods. Venue is
+   Graz, Austria, to the extent permitted by law.
+
+Licensing and questions: https://store.neo-digital.at/extensions/website-check

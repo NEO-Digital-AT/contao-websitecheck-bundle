@@ -1,0 +1,9 @@
+/* Back end: a setting without effect (Backend\FieldLock) shows the reason in place
+   of its help text, in full and in Contao's error colour (light and dark scheme). */
+.widget.nwc-locked .tl_help {
+  height: auto;
+  white-space: normal;
+  overflow: visible;
+  color: var(--red, #c33);
+  font-weight: 600;
+}

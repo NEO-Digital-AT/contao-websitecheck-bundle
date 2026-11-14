@@ -1,0 +1,4 @@
+# Development only: not in the archive customers download
+/tests export-ignore
+/phpunit.xml.dist export-ignore
+/.github export-ignore

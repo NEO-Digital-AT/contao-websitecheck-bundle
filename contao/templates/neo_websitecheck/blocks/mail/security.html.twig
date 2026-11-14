@@ -1,0 +1,24 @@
+{#
+  Server security in the e-mail: the warnings (first thing after the header)
+  and optionally the result of the PHP check. Fixed warning colours, see the
+  PDF block.
+#}
+{% set alerts = result.alerts ?? [] %}
+{% set srv = result.server ?? {} %}
+{% set showAlerts = block.mode != 'status' and alerts|length > 0 %}
+{% set showStatus = block.mode != 'alerts' and (srv.status ?? 'unchecked') != 'unchecked' %}
+{% if showAlerts or showStatus %}
+<tr><td style="padding:0 28px {{ t.space_px[block.space] }};">
+  {% if showStatus and block.title %}<p style="margin:0 0 8px;"><b>{{ block.title }}</b></p>{% endif %}
+  {% if showAlerts %}{% for al in alerts %}
+  {% set c = al.level == 'critical' ? {line: '#b42318', bg: '#fef3f2', ink: '#7a271a'} : {line: '#b54708', bg: '#fffaeb', ink: '#7a2e0e'} %}
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{{ c.bg }};border-left:6px solid {{ c.line }};margin:0 0 12px;"><tr><td style="padding:14px 18px;color:#1a1a1a;">
+    <span style="display:inline-block;padding:3px 8px;border-radius:4px;background:{{ c.line }};color:#ffffff;font-size:11px;font-weight:bold;letter-spacing:.08em;text-transform:uppercase;">{{ al.level == 'critical' ? block.label_critical : block.label_warning }}</span>
+    <p style="margin:8px 0 6px;font-size:17px;line-height:1.3;font-weight:bold;color:{{ c.ink }};">{{ al.title }}</p>
+    <p style="margin:0 0 8px;font-size:14px;line-height:1.5;">{{ al.text }}</p>
+    {% if al.fix %}<p style="margin:0;font-size:14px;line-height:1.5;"><b style="color:{{ c.ink }};">{{ block.label_fix }}:</b> {{ al.fix }}</p>{% endif %}
+  </td></tr></table>
+  {% endfor %}{% endif %}
+  {% if showStatus %}<p style="margin:0;font-size:14px;line-height:1.5;"><b>{{ srv.title }}.</b> {{ srv.text }}</p>{% endif %}
+</td></tr>
+{% endif %}

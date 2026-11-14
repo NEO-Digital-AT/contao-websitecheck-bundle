@@ -1,0 +1,11 @@
+{% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
+{% if result.strengths %}
+<div style="margin-bottom:{{ t.space[block.space] }}">
+{% if block.eyebrow %}<p class="eyebrow">{{ block.eyebrow }}</p>{% endif %}
+{% if block.title %}<h3>{{ block.title }}</h3>{% endif %}
+{# one row per pair: rows can break across pages, a single two-column row cannot #}
+<table class="two">
+  {% for pair in result.strengths|slice(0, block.max)|batch(2) %}<tr>{% for s in pair %}<td class="{{ loop.first ? 'l' : 'r' }}">{{ pdf.finding('good', s.title, s.text, '') }}</td>{% endfor %}{% if pair|length < 2 %}<td class="r"></td>{% endif %}</tr>{% endfor %}
+</table>
+</div>
+{% endif %}

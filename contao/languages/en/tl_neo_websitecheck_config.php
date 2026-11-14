@@ -1,0 +1,70 @@
+<?php
+
+declare(strict_types=1);
+
+$l = &$GLOBALS['TL_LANG']['tl_neo_websitecheck_config'];
+
+$l['title_legend'] = 'Configuration';
+$l['mail_legend'] = 'E-mail to the visitor';
+$l['mail_design_legend'] = 'Design the e-mail';
+$l['pdf_legend'] = 'PDF report';
+$l['pdf_design_legend'] = 'Design the PDF report';
+$l['owner_legend'] = 'Your copy';
+$l['element_legend'] = 'The element on the page';
+$l['fe_result'] = ['Result on the page', 'Short: grade, one short sentence and the hint to the PDF. Full: additionally scores, all areas, measures and strengths. The PDF always has everything.'];
+$l['fe_result_options'] = ['compact' => 'Short (recommended)', 'full' => 'Full'];
+$l['expert_legend'] = 'Internal copy as Twig template';
+
+$l['title'] = ['Name', 'Internal name, e.g. “German” or “English – hotels”.'];
+$l['language'] = ['Language', 'An element without an explicit assignment uses the configuration whose language matches its page.'];
+$l['mail_subject'] = ['Subject', 'Placeholders allowed. Default: “Your website check for {{domain}}: grade {{grade}} · {{grade_word}}”'];
+$l['mail_from_name'] = ['Sender name', 'Empty = settings / company name.'];
+$l['mail_from_email'] = ['Sender address', 'Empty = settings / config.yaml / Contao admin address.'];
+$l['mail_reply_to'] = ['Reply-to address', 'Empty = settings.'];
+$l['mail_owner_subject'] = ['Subject of your copy', 'Default: “[Website check] {{domain}} · grade {{grade}} · {{firstname}}”'];
+$l['mail_design'] = ['E-mail', 'Add blocks on the left, click them in the preview and edit on the right. “Load template” sets a ready-made structure.'];
+$l['pdf_filename'] = ['PDF file name', 'With placeholders, e.g. website-check-{{domain}}-{{date}}.pdf ({{grade}}, {{firstname}}, {{lastname}}, {{company}} work too).'];
+$l['pdf_design'] = ['PDF report', 'Compose page by page: cover, data blocks, your own texts and images, page breaks. The preview uses the latest finished check or demo data.'];
+$l['mail_body'] = ['E-mail as Twig code (advanced mode)', 'Administrators only. Edited in the designer via “Advanced (Twig)”. When filled, this code is used instead of the visual design.'];
+$l['owner_body'] = ['Your copy as Twig template', 'Empty = bundled template.'];
+$l['pdf_body'] = ['PDF report as Twig code (advanced mode)', 'Administrators only. Edited in the designer via “Advanced (Twig)”. When filled, this code is used instead of the visual design.'];
+
+$l['fe_url_label'] = ['Label above the address field', 'Default: “Address of your website”'];
+$l['fe_submit'] = ['“Check now” button', ''];
+$l['fe_gate_title'] = ['Contact form: title', 'Default: “Your result is ready”'];
+$l['fe_gate_text'] = ['Contact form: text', 'Default: “Where may we send it? …”'];
+$l['fe_gate_legal'] = ['Contact form: privacy note', 'The link to the privacy page is appended automatically.'];
+$l['fe_newsletter'] = ['Newsletter checkbox text', ''];
+$l['fe_gate_submit'] = ['Contact form: button', 'Default: “Show result”'];
+$l['fe_disclaimer'] = ['Result: note', 'Default: “Automatic assessment based on …”'];
+$l['fe_cta'] = ['Result: button', 'Default: “Discuss the result, free of charge”'];
+
+$l['new'] = ['New configuration', 'Add a configuration for another language or use case'];
+$l['edit'] = ['Edit', 'Edit configuration ID %s'];
+$l['copy'] = ['Duplicate', 'Duplicate configuration ID %s'];
+$l['delete'] = ['Delete', 'Delete configuration ID %s'];
+$l['show'] = ['Details', 'Show details of ID %s'];
+$l['preview_pdf'] = ['PDF preview', 'Open the designed report as PDF'];
+$l['preview_mail'] = ['E-mail preview', 'Open the designed e-mail in the browser'];
+$l['automatic'] = 'Automatic (by page language)';
+$l['element_config'] = ['Configuration', 'Which website check configuration (texts, e-mail, PDF) this element uses. Automatic = the one matching the language of this page.'];
+
+// Multilingual sites: links and newsletter per configuration (= per language); empty = global value.
+$l['links_legend'] = 'Pages of this language';
+$l['contact_page'] = ['Contact page', 'Target of “Discuss the result” in the form, e-mail and PDF. Empty = contact page from the settings. The content element can override it with its own redirect page. Without a page (here or in the settings) the button is left out – the bundle never sets a link itself.'];
+$l['privacy_page'] = ['Privacy page', 'Link in the contact step of the form, in e-mail and PDF. Empty = privacy page from the settings. Without a page no link is shown – please set it.'];
+$l['newsletter_legend'] = 'Newsletter of this language';
+$l['nl_list_id'] = ['Brevo list', 'List for sign-ups from the check in this language. Empty = list from the configuration file (newsletter.brevo_list_id).'];
+$l['nl_template_id'] = ['Double opt-in template', 'Confirmation e-mail in this language. Empty = template from the configuration file (newsletter.brevo_template_id).'];
+$l['nl_redirect_page'] = ['Confirmation page', 'Page after clicking the confirmation link. Empty = newsletter.brevo_redirect_url. Without a confirmation page there is no newsletter sign-up.'];
+$l['nl_list_id_contao'] = ['Newsletter channel (Contao)', 'Contao newsletter channel for sign-ups from the check in this language.'];
+$l['nl_redirect_page_contao'] = ['Confirmation page', 'Page with Contao’s “Subscribe” module: the confirmation link in the e-mail leads there and activates the subscription. The e-mail text comes from that module. Without a confirmation page there is no newsletter sign-up.'];
+$l['ask_contact'] = ['Ask for contact permission', 'Shows the optional box "You may contact me once by e-mail about this result" in the form. Wording and time are stored with the check.'];
+$l['fe_contact'] = ['Text of the "contact me once" box', ''];
+$l['fe_gate_text_free'] = ['Contact form: text without licence', 'Shown instead of “Contact form: text” while there is no licence; promises no e-mail. Default: “Enter your name and e-mail address, …”'];
+$l['fe_gate_legal_free'] = ['Contact form: privacy note without licence', 'Shown instead of “Contact form: privacy note” while there is no licence. The link to the privacy page is appended automatically.'];
+$l['fe_disclaimer_free'] = ['Result: note without licence', 'Shown instead of “Result: note” while there is no licence; mentions no PDF report.'];
+$l['mail_note'] = 'Without a licence this e-mail with the PDF report goes only to you as the website operator (to the address under “Copy to”, otherwise to the sender address), never to the visitor.';
+$l['nl_provider'] = ['Newsletter system', 'Where sign-ups from the check in this language go: the Brevo newsletter module or Contao’s own newsletter module (double opt-in with Contao’s confirmation e-mail). Save to see the matching fields.'];
+$l['nl_provider_auto'] = 'Automatic (Brevo when installed)';
+$l['nl_provider_options'] = ['brevo' => 'Brevo (newsletter module)', 'contao' => 'Contao newsletter'];

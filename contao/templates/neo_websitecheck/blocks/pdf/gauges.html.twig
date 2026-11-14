@@ -1,0 +1,28 @@
+{% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
+{% set items = [] %}
+{% for key in ['perf', 'a11y', 'bp', 'seo'] %}
+  {% if attribute(block, key) %}{% set items = items|merge([{key: key, label: attribute(block, 'label_' ~ key), v: result.scores[key] ?? null}]) %}{% endif %}
+{% endfor %}
+{% if items %}
+<table style="width:100%;border-collapse:separate;border-spacing:3mm 0;margin:0 -3mm {{ block.show_kpis ? '3mm' : t.space[block.space] }};page-break-inside:avoid"><tr>
+{% for it in items %}
+  {% set v = it.v is null ? 0 : it.v %}
+  {% set col = it.v is null ? '#cccccc' : (v >= 90 ? '#0cce6b' : (v >= 50 ? '#ffa400' : '#ff4e42')) %}
+  {% set r = 24 %}{% set c = 2 * 3.14159 * r %}
+  <td style="width:{{ (100 / items|length)|round }}%;text-align:center;padding:4mm 2mm;background:{{ t.soft }};border:1px solid {{ t.line }};border-radius:{{ t.r }}">
+    {# Dompdf draws SVG only as an image: the ring is an <img>, the number a table cell on top (centred like the badges). #}
+    {% set ring %}<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="{{ r }}" fill="none" stroke="{{ col }}" stroke-opacity=".18" stroke-width="7"/>{% if v > 0 %}<circle cx="32" cy="32" r="{{ r }}" fill="none" stroke="{{ col }}" stroke-width="7" stroke-linecap="round" stroke-dasharray="{{ (c * v / 100)|round(2) }} {{ c|round(2) }}" transform="rotate(-90 32 32)"/>{% endif %}</svg>{% endset %}
+    <div style="position:relative;width:17mm;height:17mm;margin:0 auto;text-align:left">
+      <img src="data:image/svg+xml;charset=utf-8,{{ ring|trim|url_encode }}" alt="" style="position:absolute;left:0;top:0;width:17mm;height:17mm">
+      <table style="position:absolute;left:0;top:0;border-collapse:collapse"><tr><td style="width:17mm;height:17mm;padding:0 0 {{ it.v is null ? '0.9' : '0' }}mm;border:0;text-align:center;vertical-align:middle;font-weight:bold;font-size:12pt;line-height:1;color:{{ t.text }}">{{ it.v is null ? '–' : v }}</td></tr></table>
+    </div>
+    <div style="font-size:8pt;color:{{ t.muted }};margin-top:1mm">{{ it.label }}</div>
+  </td>
+{% endfor %}
+</tr></table>
+{% if block.show_kpis and areas.speed.kpis is defined %}
+<table style="width:100%;border-collapse:separate;border-spacing:2.5mm 0;margin:0 -2.5mm {{ t.space[block.space] }};page-break-inside:avoid"><tr>
+  {% for k in areas.speed.kpis|slice(0, 3) %}{{ pdf.kpi(t, k, '#fff') }}{% endfor %}
+</tr></table>
+{% endif %}
+{% endif %}

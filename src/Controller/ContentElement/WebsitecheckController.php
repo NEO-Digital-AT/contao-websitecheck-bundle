@@ -1,0 +1,158 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Neo\WebsitecheckBundle\Controller\ContentElement;
+
+use Composer\InstalledVersions;
+use Contao\ContentModel;
+use Contao\CoreBundle\Altcha\Altcha;
+use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Contao\CoreBundle\Twig\FragmentTemplate;
+use Contao\PageModel;
+use Neo\BasicBundle\License\CreditLine;
+use Neo\WebsitecheckBundle\I18n\PendingTranslations;
+use Neo\WebsitecheckBundle\License\Editions;
+use Neo\WebsitecheckBundle\Settings;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+
+/**
+ * Content element "Website check": the whole flow (URL → progress → lead form
+ * → result) lives in the Twig template and the bundle's JavaScript; this
+ * controller only passes configuration (endpoints, limits, texts, links).
+ *
+ * Licence (Editions): "proof" carries the signed certificate when the licence
+ * is valid for this host; the shared credit script of the Basic bundle checks
+ * it again before it leaves out the credit line. Without a licence the
+ * visitor gets no e-mail (it goes to the operator): the form promises none,
+ * the page shows the full result and there is no newsletter box.
+ */
+#[AsContentElement('neo_websitecheck', category: 'neo', template: 'content_element/neo_websitecheck')]
+final class WebsitecheckController extends AbstractContentElementController
+{
+    public function __construct(
+        private readonly Settings $settings,
+        private readonly RouterInterface $router,
+        private readonly ContentUrlGenerator $urlGenerator,
+        private readonly InsertTagParser $insertTagParser,
+        private readonly PendingTranslations $pendingTranslations,
+        private readonly CreditLine $credit,
+        private readonly Editions $editions,
+        private readonly Altcha|null $altcha = null,
+    ) {
+    }
+
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
+    {
+        $GLOBALS['TL_CSS']['neo_websitecheck'] = 'bundles/neowebsitecheck/websitecheck.css|static';
+        // Credit line of the free edition: the shared script of the Basic bundle, before this one.
+        $this->credit->register();
+        $GLOBALS['TL_JAVASCRIPT']['neo_websitecheck'] = 'bundles/neowebsitecheck/websitecheck.js|async|static';
+        $report = $this->editions->allows(Editions::VISITOR_MAIL, $request->getHost());
+
+        $page = $request->attributes->get('pageModel');
+        $lang = $page instanceof PageModel ? (string) $page->language : ($request->getLocale() ?: 'en');
+        // A language without translation file gets its texts translated after this response.
+        $this->pendingTranslations->request($lang);
+
+        $brand = $this->settings->brand();
+        // Configuration: the one picked in the element (core "module" column) or the one matching the page language.
+        $configRow = $this->settings->db()?->config((int) ($model->row()['module'] ?? 0), $lang);
+        $configId = (int) ($configRow['id'] ?? 0);
+        // Multilingual sites: contact and privacy page of this language's configuration
+        // first, then the global ones from the settings / config.yaml.
+        $contactUrl = $this->pageUrl((int) ($configRow['contact_page'] ?? 0)) ?: $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
+        $privacyUrl = $this->pageUrl((int) ($configRow['privacy_page'] ?? 0)) ?: $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
+
+        // Core "url" field: {{link_url::42}} from the page picker or a typed address
+        $elementUrl = trim((string) ($model->row()['url'] ?? ''));
+
+        if ('' !== $elementUrl) {
+            $contactUrl = trim($this->insertTagParser->replaceInline($elementUrl)) ?: $contactUrl;
+        }
+
+        // A bare anchor ("#contact") would resolve against Contao's <base href> (the
+        // site root) and leave the page: prefix it with the current page's address.
+        if (str_starts_with($contactUrl, '#')) {
+            $contactUrl = $this->pageUrl((int) ($this->getPageModel()?->id ?? 0)).$contactUrl;
+        }
+
+        // No inline colours: the element ships a neutral look and is themed with
+        // the --nwc-* custom properties in the site's stylesheet (inline values
+        // would beat the theme). The brand colours style PDF and e-mail only.
+        $style = '';
+
+        $config = [
+            'start' => $this->router->generate('neo_websitecheck_start'),
+            'status' => $this->router->generate('neo_websitecheck_status', ['id' => 0]),
+            'claim' => $this->router->generate('neo_websitecheck_claim', ['id' => 0]),
+            'challenge' => null !== $this->altcha ? $this->router->generate('neo_websitecheck_challenge') : null,
+            'altchaMax' => null !== $this->altcha ? $this->altcha->getRangeMax() : 0,
+            'lang' => $lang,
+            'limit' => $this->settings->checksPerIpPerDay(),
+            'limitHour' => $this->settings->checksPerIpPerHour(),
+            'dataLayer' => $this->settings->dataLayer(),
+            'contactUrl' => $contactUrl,
+            'config' => $configId,
+            'report' => $report,
+            'proof' => $this->credit->proof(Editions::MODULE, $request->getHost()),
+        ];
+
+        $template->set('config', $config);
+        $template->set('lang', $lang);
+        $template->set('text', (string) ($model->row()['text'] ?? ''));
+        $template->set('contact_url', $contactUrl);
+        $template->set('privacy_url', $privacyUrl);
+        $template->set('style', $style);
+        $template->set('vars', ['company' => (string) $brand['name'], 'owner' => (string) $brand['owner_name'], 'phone' => (string) $brand['phone'], 'website' => (string) $brand['website_url'], 'days' => (string) $this->settings->retentionDays(), 'config_id' => $configId]);
+        $template->set('config_id', $configId);
+        // Result on the page: short (grade, one or two sentences, PDF hint) or the full overview;
+        // without the e-mail to the visitor always the full overview, there is nothing else to read.
+        $template->set('result_mode', !$report || 'full' === ($configRow['fe_result'] ?? '') ? 'full' : 'compact');
+        $template->set('report', $report);
+        $template->set('newsletter', $this->settings->newsletterEnabled($configId, $lang) && $this->editions->allows(Editions::NEWSLETTER, $request->getHost()));
+        $template->set('ask_contact', $this->settings->askContact($configId, $lang));
+        $template->set('newsletter_label', (string) ($this->settings->newsletter()['label'] ?? ''));
+        $template->set('altcha', null !== $this->altcha);
+        $template->set('altcha_v3', null !== $this->altcha && self::isAltcha3());
+        $template->set('element_id', 'wc'.(int) ($model->row()['id'] ?? 0));
+
+        return $template->getResponse();
+    }
+
+    private function pageUrl(int $id): string
+    {
+        if ($id <= 0) {
+            return '';
+        }
+
+        try {
+            $page = PageModel::findPublishedById($id);
+
+            return null === $page ? '' : $this->urlGenerator->generate($page);
+        } catch (\Throwable) {
+            return '';
+        }
+    }
+
+    /**
+     * ALTCHA 3 (Contao 6) reads the challenge address and a JSON configuration
+     * instead of single attributes and brings its own translations; ALTCHA 1 and 2
+     * (Contao 5.4 to 5.7) use the attributes of the template's other branch.
+     */
+    private static function isAltcha3(): bool
+    {
+        if (!InstalledVersions::isInstalled('contao-components/altcha')) {
+            return false;
+        }
+
+        $version = (string) InstalledVersions::getVersion('contao-components/altcha');
+
+        return '' !== $version && version_compare($version, '3', '>=');
+    }
+}

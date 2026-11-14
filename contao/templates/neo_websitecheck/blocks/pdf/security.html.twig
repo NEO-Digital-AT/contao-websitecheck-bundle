@@ -1,0 +1,37 @@
+{#
+  Server security: warnings that concern the whole server (a PHP version with a
+  known vulnerability, a public phpinfo() page) and the result of the PHP check.
+  mode: "alerts" only when there is a warning (the place right after the cover,
+  where the renderer also puts it when a design has no such block) · "status"
+  the result of the check · "both". The warning colours are fixed: they must
+  read as a warning in every brand design (contrast ≥ 4.5 : 1 on their ground).
+#}
+{% set alerts = result.alerts ?? [] %}
+{% set srv = result.server ?? {} %}
+{% set showAlerts = block.mode != 'status' and alerts|length > 0 %}
+{% set showStatus = block.mode != 'alerts' and (srv.status ?? 'unchecked') != 'unchecked' %}
+{% if showAlerts or showStatus %}
+<div style="margin-bottom:{{ t.space[block.space] }}">
+{% if showStatus and block.eyebrow %}<p class="eyebrow">{{ block.eyebrow }}</p>{% endif %}
+{% if showStatus and block.title %}<h2>{{ block.title }}</h2>{% endif %}
+{% if showAlerts %}
+{% for al in alerts %}
+{% set c = al.level == 'critical' ? {line: '#b42318', bg: '#fef3f2', ink: '#7a271a'} : {line: '#b54708', bg: '#fffaeb', ink: '#7a2e0e'} %}
+<table style="width:100%;border-collapse:collapse;background:{{ c.bg }};border-left:1.6mm solid {{ c.line }};margin-bottom:3mm;page-break-inside:avoid"><tr><td style="padding:3.6mm 4.5mm 3.8mm 4mm">
+  <table class="badge" style="background:{{ c.line }};border-radius:1.2mm"><tr><td class="bn" style="height:4.6mm;padding:0 2.2mm;color:#ffffff;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap">{{ al.level == 'critical' ? block.label_critical : block.label_warning }}</td></tr></table>
+  <p style="margin:2.2mm 0 1.2mm;font-size:12pt;font-weight:bold;line-height:1.25;color:{{ c.ink }}">{{ al.title }}</p>
+  <p style="margin:0 0 2mm;font-size:9pt;line-height:1.45;color:#1a1a1a">{{ al.text }}</p>
+  {% if al.fix %}<p style="margin:0;font-size:9pt;line-height:1.45;color:#1a1a1a"><b style="color:{{ c.ink }}">{{ block.label_fix }}:</b> {{ al.fix }}</p>{% endif %}
+</td></tr></table>
+{% endfor %}
+{% endif %}
+{% if showStatus %}
+{% set kind = {vulnerable: 'bad', verify: 'warn', eol: 'warn', ok: 'good'}[srv.status] ?? '' %}
+<table class="finding"><tr>
+  <td class="i">{% if kind %}<span class="dot {{ kind }}">{{ kind == 'good' ? '✓' : '!' }}</span>{% else %}<span class="dot" style="background:{{ t.soft }};color:{{ t.muted }}">–</span>{% endif %}</td>
+  <td class="t"><b>{{ srv.title }}</b>{{ srv.text }}</td>
+</tr></table>
+{% if block.note %}<p class="note">{{ block.note }}</p>{% endif %}
+{% endif %}
+</div>
+{% endif %}

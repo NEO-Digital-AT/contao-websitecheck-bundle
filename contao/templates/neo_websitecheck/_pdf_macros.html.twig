@@ -1,0 +1,56 @@
+{#
+  Shared PDF helpers. badge(): a coloured square with a centred number.
+  Dompdf centres text vertically ONLY when width, height and vertical-align
+  sit on the table cell itself (measured: line-height tricks or height on the
+  table leave the digit 2–6 mm too high). Background, radius and border are
+  repeated inline on the cell so surrounding rules such as ".areas td" cannot
+  repaint it. A dash (no grade) sits low in the font, so it gets a small
+  bottom padding to look centred. Digits sit at a different height in each
+  font: the frame lifts them per font (rule "table.badge td.bn", value
+  t.badge_lift), so digit cells carry no inline padding. Keep this structure
+  when restyling.
+#}
+{% macro badge(value, size, pt, bg, ink, radius) -%}
+<table class="badge" style="border-collapse:collapse;border-radius:{{ radius|default('2mm') }};background:{{ bg }}"><tr><td{% if value != '–' %} class="bn"{% endif %} style="width:{{ size }}mm;height:{{ size }}mm;{% if value == '–' %}padding:0 0 {{ (pt * 0.073)|round(2) }}mm;{% endif %}border:0;border-radius:{{ radius|default('2mm') }};background:{{ bg }};text-align:center;vertical-align:middle;font-weight:bold;font-size:{{ pt }}pt;line-height:1;color:{{ ink }}">{{ value }}</td></tr></table>
+{%- endmacro %}
+
+{# Grade legend as a table (badge cell + label cell), two items per row (no wrapping inside a label); cells reset border/background so card rules do not leak in. #}
+{% macro legend(t, labels) -%}
+<table style="border-collapse:collapse;margin-top:1.2mm">
+  {% for row in [1, 2, 3, 4, 5]|batch(2) %}
+  <tr>
+    {% for n in row %}
+    <td style="width:6mm;padding:.6mm 1mm .6mm 0;border:0;background:transparent;vertical-align:middle">{{ _self.badge(n, 4.4, 7, t.grade_bg[n], t.grade_ink[n], '1.2mm') }}</td>
+    <td style="padding:.6mm 4mm .6mm 0;border:0;background:transparent;vertical-align:middle;font-size:7.5pt;line-height:1.2;white-space:nowrap;color:{{ t.muted }}">{{ labels[n] }}</td>
+    {% endfor %}
+    {% if row|length < 2 %}<td colspan="2" style="border:0;background:transparent"></td>{% endif %}
+  </tr>
+  {% endfor %}
+</table>
+{%- endmacro %}
+
+{# One measured value (speed area) as a table cell. Label and note are the design's own words (t.labels), the value comes from the check. #}
+{% macro kpi(t, k, bg) -%}
+<td style="width:33%;padding:3mm;background:{{ bg|default(t.soft) }};border:1px solid {{ t.line }};border-radius:{{ t.r }};vertical-align:top"><small style="display:block;font-size:6.8pt;letter-spacing:.08em;text-transform:uppercase;color:{{ t.muted }}">{{ t.labels.kpi[k.key] ?? k.label }}</small><b style="display:block;font-size:13pt;color:{{ t.primary }};margin:.5mm 0">{{ k.value }}</b><em style="font-style:normal;font-size:8pt;color:{{ k.ok ? '#2d7a2d' : '#8a5a00' }}">{{ t.labels.kpi_note[k.key] ?? k.note }}</em></td>
+{%- endmacro %}
+
+{# A finding card (green tick or orange exclamation mark) as used by area details, strengths and AI sections. #}
+{% macro finding(kind, title, text, small) -%}
+<table class="finding"><tr><td class="i"><span class="dot {{ kind == 'good' ? 'good' : 'warn' }}">{{ kind == 'good' ? '✓' : '!' }}</span></td><td class="t"><b>{{ title }}</b>{{ text }}{% if small %}<small>{{ small }}</small>{% endif %}</td></tr></table>
+{%- endmacro %}
+
+{# One row of an area detail: two marked excerpts, two finding cards, or "works | to improve" side by side. #}
+{% macro area_row(r, block, t) %}
+<tr>
+{% if r.type == 'crops' %}
+  {% for crop in r.items %}<td class="{{ loop.first ? 'l' : 'r' }}"><div class="crop"><img src="{{ crop.data }}" alt=""></div>{% if crop.caption is defined and crop.caption %}<p style="font-size:8.2pt;line-height:1.35;color:{{ t.muted }};margin:0 0 3mm">{{ crop.caption }}</p>{% else %}<p class="caption">{{ crop.title }}{% if crop.text %} · <i>{{ crop.text|slice(0, 60) }}</i>{% endif %}</p>{% endif %}</td>{% endfor %}
+  {% if r.items|length < 2 %}<td class="r"></td>{% endif %}
+{% elseif r.type == 'cards' %}
+  {% for c in r.items %}<td class="{{ loop.first ? 'l' : 'r' }}">{{ _self.finding(c.kind, c.title, c.text, c.small) }}</td>{% endfor %}
+  {% if r.items|length < 2 %}<td class="r"></td>{% endif %}
+{% else %}
+  <td class="l">{% if r.good %}{{ _self.finding('good', r.good.title, r.good.text, '') }}{% elseif r.first %}<p class="muted">–</p>{% endif %}</td>
+  <td class="r">{% if r.issue %}{{ _self.finding('warn', r.issue.title, r.issue.text, (r.issue.examples ?? [])|join(' · ')) }}{% elseif r.first and block.nothing_text %}<p class="muted">{{ block.nothing_text }}</p>{% endif %}</td>
+{% endif %}
+</tr>
+{% endmacro %}

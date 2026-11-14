@@ -1,0 +1,10 @@
+{% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
+{% if areas.speed.kpis is defined and areas.speed.kpis %}
+<div style="margin-bottom:{{ t.space[block.space] }};page-break-inside:avoid">
+{% for row in areas.speed.kpis|batch(3) %}
+<table style="width:100%;border-collapse:separate;border-spacing:2.5mm 0;margin:0 -2.5mm 2.5mm"><tr>
+  {% for k in row %}{{ pdf.kpi(t, k) }}{% endfor %}
+</tr></table>
+{% endfor %}
+</div>
+{% endif %}

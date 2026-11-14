@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - run: composer validate --strict
+
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+    name: PHP ${{ matrix.php }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ctype, dom, gd, intl, mbstring, openssl, pdo_sqlite, sodium
+          coverage: none
+      # Basic from its public repository.
+      - run: composer config repositories.neo-basic vcs https://github.com/NEO-Digital-AT/contao-basic-bundle
+      # Composer picks the newest Contao and PHPUnit that run on the PHP version.
+      - run: composer install --no-interaction --no-progress
+      - run: composer test

@@ -1,0 +1,886 @@
+# Website-Check — deutsche Texte (Frontend, Bericht, E-Mail).
+# Zum Überschreiben einzelner Schlüssel nach translations/neo_websitecheck.de.yaml im Projekt kopieren.
+word:
+    yes: 'ja'
+    no: 'nein'
+    none: 'keine'
+grade:
+    1: 'Sehr gut'
+    2: 'Gut'
+    3: 'Befriedigend'
+    4: 'Genügend'
+    5: 'Nicht genügend'
+verdict:
+    good: 'Eine solide Website. Nichts Dringendes, ein paar Kleinigkeiten würden sie noch runder machen.'
+    mid: 'Solide Grundlage, aber einzelne Punkte kosten Sie vermutlich Anfragen. Die wichtigsten stehen unten.'
+    low: 'Deutlicher Handlungsbedarf. Mit den drei Maßnahmen unten anfangen, dann wird aus der Seite ein Werkzeug, das Kunden bringt.'
+area:
+    speed: 'Ladezeit'
+    accessibility: 'Barrierefreiheit'
+    seo: 'Auffindbarkeit bei Google'
+    ai: 'Sichtbarkeit in KI-Suchen'
+    content: 'Inhalte & Klarheit'
+    legal: 'Recht & Datenschutz'
+    mobile: 'Mobil'
+    unavailable: 'Konnte diesmal nicht gemessen werden.'
+measure:
+    effort:
+        small: 'Aufwand klein'
+        medium: 'Aufwand mittel'
+        large: 'Aufwand groß'
+
+# ---------------------------------------------------------------- Ladezeit
+speed:
+    summary:
+        good: 'Die Startseite steht am Handy nach %lcp% s. Das ist schneller als die meisten Websites.'
+        ok: 'Die Startseite braucht am Handy %lcp% s. Brauchbar, aber ein Teil der Besucher geht, bevor sie fertig ist.'
+        bad: 'Die Startseite braucht am Handy %lcp% s. Viele Besucher springen ab, bevor etwas erscheint.'
+    meta: 'Leistung %perf% von 100 · LCP %lcp% s · CLS %cls%'
+    kpi:
+        lcp: 'Hauptinhalt sichtbar (LCP)'
+        lcp_note: 'Grenzwert 2,5 s'
+        cls: 'Verschiebungen beim Laden (CLS)'
+        cls_note: 'Grenzwert 0,1'
+        tbt: 'Blockierte Zeit (TBT)'
+        tbt_note: 'Grenzwert 200 ms'
+        inp: 'Reaktion auf Tippen (INP)'
+        inp_note: 'Grenzwert 200 ms'
+        perf: 'Leistung'
+        perf_note: 'von 100'
+        bytes: 'Seitengewicht'
+        bytes_note: 'Grenzwert 2 MB'
+        requests: 'Anfragen'
+        requests_note: 'Grenzwert 80'
+    issue:
+        lcp:
+            title: 'Startseite lädt am Handy langsam'
+            text: 'Der Hauptinhalt erscheint nach %lcp% Sekunden. Google zieht die Grenze bei 2,5 Sekunden, Besucher urteilen noch früher.'
+            fix: 'Das größte Bild im sichtbaren Bereich verkleinern, Skripte später laden, Dateien komprimiert ausliefern. Meist ein bis zwei Stunden Arbeit.'
+        largest_image:
+            title: 'Ein Bild wiegt %kb% KB'
+            text: 'Die Datei „%file%“ ist das schwerste Element der Startseite und bremst alles danach.'
+            fix: 'Das Bild in der angezeigten Breite (meist 1200–1600 px) als WebP oder AVIF exportieren. Oft 80 % kleiner, ohne sichtbaren Unterschied.'
+        render_blocking:
+            title: '%count% Dateien blockieren die erste Anzeige'
+            text: 'Stylesheets oder Skripte im Seitenkopf werden vollständig geladen, bevor etwas angezeigt wird.'
+            fix: 'Nicht kritisches CSS und JavaScript verzögert oder asynchron laden, nur das Nötigste im Kopf behalten.'
+        image_formats:
+            title: 'Bilder in alten Formaten'
+            text: 'JPEG/PNG, wo WebP oder AVIF 30–70 % kleiner wären.'
+            fix: 'Das CMS moderne Formate automatisch ausliefern lassen (bei den meisten Systemen eine Einstellung).'
+        responsive_images:
+            title: 'Bilder größer als angezeigt'
+            text: 'Handys laden Bilder in Desktop-Größe und verkleinern sie.'
+            fix: 'Bilder in mehreren Größen bereitstellen (srcset); das CMS kann das meist erzeugen.'
+        unused_js:
+            title: 'Ungenutztes JavaScript'
+            text: 'Es werden Skripte geladen, die diese Seite nicht braucht. Das kostet Zeit und Akku.'
+            fix: 'Ungenutzte Plugins und Tag-Skripte entfernen, den Rest nur auf den Seiten laden, die ihn brauchen.'
+        ttfb:
+            title: 'Server antwortet langsam'
+            text: 'Der Server braucht %value%, bis das erste Byte kommt, davor kann der Browser nichts tun.'
+            fix: 'Seiten-Cache im CMS einschalten oder beim Hoster einen schnelleren Tarif wählen.'
+        compression:
+            title: 'Dateien werden unkomprimiert gesendet'
+            text: 'Textdateien (HTML, CSS, JavaScript) gehen unkomprimiert zum Browser.'
+            fix: 'gzip oder Brotli am Server aktivieren (eine Zeile in der Serverkonfiguration).'
+        cls:
+            title: 'Inhalte springen beim Laden (CLS %cls%)'
+            text: 'Elemente verschieben sich, nachdem sie erschienen sind. Besucher klicken daneben oder verlieren die Stelle.'
+            fix: 'Platz für Bilder, Werbung und Schriften reservieren (Breite/Höhe angeben, font-display: swap).'
+        bytes:
+            title: 'Startseite wiegt %mb% MB'
+            text: 'Im Mobilfunk dauert das mehrere Sekunden und kostet Datenvolumen.'
+            fix: 'Bilder und Videos komprimieren, Videos erst laden, wenn sie sichtbar sind.'
+        console:
+            title: '%count% Fehler in der Browser-Konsole'
+            text: 'JavaScript-Fehler deuten auf kaputte Funktionen hin, auf die Besucher stoßen können.'
+            fix: 'Die Fehler vom Webentwickler prüfen lassen, meist sind es veraltete Plugins.'
+    good:
+        lcp:
+            title: 'Schnell am Handy'
+            text: 'Der Hauptinhalt steht nach %lcp% s, unter den 2,5 s, die Google erwartet. Diese Basis fehlt vielen Websites.'
+        cls:
+            title: 'Nichts springt'
+            text: 'Das Layout bleibt beim Laden stabil, Besucher können sofort lesen und klicken.'
+        https:
+            title: 'HTTPS korrekt eingerichtet'
+            text: 'Verschlüsselte Verbindung mit gültigem Zertifikat, http leitet auf https weiter.'
+        console:
+            title: 'Keine Fehler im Browser'
+            text: 'Die Browser-Konsole ist sauber, keine kaputten Skripte.'
+        images:
+            title: 'Bilder richtig ausgeliefert'
+            text: 'Moderne Formate und passende Größen für Handy und Desktop.'
+
+# ---------------------------------------------------------------- Barrierefreiheit
+a11y:
+    summary:
+        good: 'In den automatischen Tests barrierefrei: Texte lesbar, Bedienelemente beschriftet.'
+        ok: 'Weitgehend in Ordnung. %count% Kontrast-Fundstellen und einzelne Beschriftungen verhindern die Bestnote.'
+        bad: 'Mehrere Barrieren: %count% Kontrast-Fundstellen, fehlende Beschriftungen oder Beschreibungen. Das kostet auch normale Besucher.'
+    meta: 'Lighthouse Barrierefreiheit %score% von 100 · %count% Kontrast-Fundstellen'
+    issue:
+        meta_viewport:
+            title: 'Zoomen am Handy ist gesperrt'
+            text: 'Die Seite verbietet das Vergrößern mit zwei Fingern. Wer schlecht sieht, kann Texte dann nicht größer stellen.'
+            fix: 'Im Seitenkopf bei „viewport“ die Angaben user-scalable=no und maximum-scale entfernen, eine Zeile im Template.'
+        color_contrast:
+            title: 'Text mit zu wenig Kontrast (%count%×)'
+            text: 'Helle Schrift auf hellem Grund oder dunkel auf dunkel ist im Sonnenlicht und für rund jeden zwölften Mann (Farbsehen) schwer lesbar. Erforderlich: 4,5:1.'
+            fix: 'Schriftfarbe oder Hintergrund etwas abdunkeln, meist ein Farbwert im Stylesheet, kein Redesign.'
+        image_alt:
+            title: '%count% Bilder ohne Beschreibung'
+            text: 'Vorlesesoftware und Google wissen nicht, was diese Bilder zeigen.'
+            fix: 'Jedem Inhaltsbild einen kurzen Alt-Text geben, Schmuckbilder bekommen ein leeres Alt-Attribut.'
+        link_name:
+            title: '%count% Links ohne lesbaren Namen'
+            text: 'Links wie „mehr“ oder reine Icon-Links sagen Nutzern von Vorlesesoftware nichts.'
+            fix: 'Jedem Link einen Text geben, der sagt, wohin er führt, bei Icon-Links ein aria-label.'
+        button_name:
+            title: '%count% Knöpfe ohne Namen'
+            text: 'Icon-Knöpfe ohne Beschriftung können mit Vorlesesoftware nicht bedient werden.'
+            fix: 'Jedem Icon-Knopf ein aria-label geben (z. B. „Menü öffnen“).'
+        html_has_lang:
+            title: 'Seitensprache nicht angegeben'
+            text: 'Ohne Sprachangabe wählt Vorlesesoftware die falsche Aussprache.'
+            fix: 'lang="de" am <html>-Element setzen.'
+        heading_order:
+            title: 'Überschriften überspringen Ebenen'
+            text: 'Ebenen werden übersprungen (h1 → h3), die Struktur ist für Hilfstechnik verwirrend.'
+            fix: 'Überschriftenebenen der Reihe nach verwenden, das Aussehen per CSS steuern.'
+        label:
+            title: '%count% Formularfelder ohne Beschriftung'
+            text: 'Felder ohne sichtbare, verknüpfte Beschriftung sind schwer auszufüllen und werden vom Browser nicht automatisch befüllt.'
+            fix: 'Jedem Feld ein <label for> geben, das zur Feld-ID passt.'
+        target_size:
+            title: '%count% Tippziele zu klein'
+            text: 'Links oder Knöpfe unter 24 px trifft man mit dem Daumen leicht daneben.'
+            fix: 'Die Klickfläche (Innenabstand) auf mindestens 44 × 44 px vergrößern.'
+        label_content_name_mismatch:
+            title: '%count% Bedienelemente mit abweichendem Namen'
+            text: 'Icon-Knöpfe (Suche, Pfeile, Anruf) haben einen barrierefreien Namen, der nicht zum sichtbaren Text passt, Sprachsteuerung und Vorlesesoftware sagen deshalb etwas anderes an.'
+            fix: 'Das aria-label mit dem sichtbaren Text beginnen lassen oder den Icon-Text selbst als Namen verwenden.'
+    good:
+        contrast:
+            title: 'Kontraste in Ordnung'
+            text: 'Jeder geprüfte Text erreicht das nötige Kontrastverhältnis.'
+        images:
+            title: 'Bilder sind beschrieben'
+            text: 'Alle %count% Bilder auf den geprüften Seiten haben einen Alternativtext.'
+        lang:
+            title: 'Sprache angegeben'
+            text: 'Vorlesesoftware liest die Seite in der richtigen Sprache.'
+        names:
+            title: 'Links und Knöpfe benannt'
+            text: 'Jedes Bedienelement hat einen lesbaren Namen, die Überschriften sind in Reihenfolge.'
+        targets:
+            title: 'Tippziele groß genug'
+            text: 'Knöpfe und Links sind mit dem Daumen zu treffen.'
+
+# ---------------------------------------------------------------- SEO
+seo:
+    summary:
+        good: 'Titel, Beschreibungen, Überschriften und strukturierte Daten sind sauber. Google kann die Seite lesen.'
+        ok: 'Die Grundlagen sind da, einzelne Titel, Beschreibungen oder Strukturdetails lohnen sich aufzuräumen.'
+        bad: 'Wichtige Grundlagen für Google fehlen. Suchmaschinen finden die Seite, wissen aber kaum, worum es geht.'
+    meta: 'Lighthouse SEO %score% von 100 · %pages% Seiten geprüft'
+    issue:
+        title_missing:
+            title: 'Kein Seitentitel auf %page%'
+            text: 'Der Titel ist die Überschrift im Google-Ergebnis. Fehlt er, erfindet Google einen.'
+            fix: 'Einen Titel mit bis zu 60 Zeichen schreiben: was Sie anbieten, wo (z. B. „Zahnarzt in Musterstadt – Dr. Beispiel“).'
+        title_long:
+            title: 'Seitentitel zu lang auf %page%'
+            text: '%length% Zeichen, Google schneidet Titel nach etwa 60 ab.'
+            fix: 'Den Titel kürzen, die wichtigsten Wörter zuerst.'
+        desc_missing:
+            title: 'Keine Beschreibung auf %page%'
+            text: 'Die Meta-Beschreibung ist der graue Text unter dem Google-Ergebnis. Fehlt sie, zeigt Google einen zufälligen Ausschnitt.'
+            fix: '140–158 Zeichen schreiben: was die Seite bietet und warum man klicken soll.'
+        desc_long:
+            title: 'Beschreibung zu lang auf %page%'
+            text: '%length% Zeichen, Google schneidet nach etwa 160 ab.'
+            fix: 'Auf 140–158 Zeichen kürzen.'
+        h1_missing:
+            title: 'Keine Hauptüberschrift auf %page%'
+            text: 'Jede Seite braucht genau eine H1, die das Thema nennt.'
+            fix: 'Die wichtigste Überschrift zur H1 machen.'
+        h1_multiple:
+            title: '%count% Hauptüberschriften auf %page%'
+            text: 'Mehrere H1 verwischen, worum es auf der Seite geht.'
+            fix: 'Eine H1 je Seite behalten, die anderen zu H2 machen.'
+        noindex:
+            title: 'Startseite für Google gesperrt'
+            text: 'Die Startseite trägt die Anweisung „noindex“: Google soll sie nicht listen.'
+            fix: 'Die noindex-Einstellung im CMS entfernen (meist ein Häkchen an der Seite).'
+        heading_skips:
+            title: 'Überschriftenebenen übersprungen (%count%×)'
+            text: 'Sprünge wie H1 → H3 machen die Struktur für Google und Vorlesesoftware unklar.'
+            fix: 'Überschriftenebenen der Reihe nach verwenden.'
+        sitemap_missing:
+            title: 'Keine Sitemap gefunden'
+            text: 'Eine sitemap.xml nennt Google alle Seiten auf einmal, ohne sie werden neue Seiten später gefunden.'
+            fix: 'Die Sitemap im CMS aktivieren und in der robots.txt eintragen.'
+        schema:
+            title: 'Keine strukturierten Daten'
+            text: 'Strukturierte Daten (schema.org) sagen Google und KI-Assistenten, welcher Betrieb das ist, wo und wann geöffnet.'
+            fix: 'Organization- oder LocalBusiness-Daten mit Name, Adresse, Telefon und Öffnungszeiten ergänzen (die meisten CMS haben ein Plugin).'
+        not_crawlable:
+            title: 'Seite für Suchmaschinen gesperrt'
+            text: 'Robots-Anweisungen verhindern, dass Google die Seite aufnimmt.'
+            fix: 'robots.txt und Robots-Meta-Tag prüfen, die Sperre für die öffentlichen Seiten entfernen.'
+        link_text:
+            title: '%count% Links mit nichtssagendem Text'
+            text: '„Hier klicken“ oder „mehr“ sagt Google nichts über die Zielseite.'
+            fix: 'Beschreibende Linktexte verwenden („unsere Öffnungszeiten“).'
+        crawlable_anchors:
+            title: 'Links, denen Google nicht folgen kann'
+            text: 'Einige Links sind nur per JavaScript gebaut und für Suchmaschinen unsichtbar.'
+            fix: 'Für die Navigation normale <a href>-Links verwenden.'
+        canonical:
+            title: 'Canonical-Link fehlerhaft'
+            text: 'Der Canonical-Tag zeigt auf eine falsche oder nicht erreichbare Adresse, das kann Google verwirren.'
+            fix: 'Den Canonical-Link auf die Seite selbst zeigen lassen.'
+        hreflang:
+            title: 'Sprachverweise fehlerhaft'
+            text: 'Die hreflang-Tags für Sprachversionen enthalten Fehler.'
+            fix: 'hreflang-Tags korrigieren lassen (gültige Sprachcodes, alle Versionen verweisen aufeinander).'
+        http_redirect:
+            title: 'http leitet nicht auf https um'
+            text: 'Wer die Adresse ohne https eintippt, landet auf der unverschlüsselten Version.'
+            fix: 'Am Server eine dauerhafte Weiterleitung von http auf https einrichten.'
+    good:
+        sitemap:
+            title: 'Sitemap vorhanden'
+            text: '%count% Seiten sind für Google gelistet.'
+        titles:
+            title: 'Titel und Beschreibungen gesetzt'
+            text: 'Jede geprüfte Seite hat einen eigenen Titel und eine Beschreibung in passender Länge.'
+        h1:
+            title: 'Eine Hauptüberschrift je Seite'
+            text: 'Klare Struktur für Google und Besucher.'
+        schema:
+            title: 'Strukturierte Daten vorhanden'
+            text: 'Google und KI-Assistenten finden Daten vom Typ %types%.'
+        https:
+            title: 'Verschlüsselt und weitergeleitet'
+            text: 'https mit Weiterleitung von http.'
+
+# ---------------------------------------------------------------- KI-Sichtbarkeit
+ai:
+    summary:
+        good: 'KI-Assistenten dürfen die Seite lesen und finden Angebot und Betriebsdaten.'
+        ok: 'KI-Assistenten dürfen die Seite lesen, finden aber nicht alles, was sie für eine Empfehlung brauchen.'
+        bad: 'KI-Suchmaschinen sehen die Seite kaum: Crawler gesperrt, keine erkennbaren Betriebsdaten oder kein klares Angebot.'
+    meta: 'llms.txt: %llms% · %blocked% KI-Crawler gesperrt'
+    issue:
+        llms_missing:
+            title: 'Noch keine llms.txt'
+            text: 'Eine llms.txt erleichtert KI-Assistenten, Ihr Angebot richtig zu verstehen. Sie ist eine Empfehlung, keine Pflicht; die KI liest Ihre Seiten auch ohne sie.'
+            fix: '/llms.txt anlegen: drei Absätze (Angebot, Zielgruppe, Standort/Kontakt) plus Links zu den wichtigsten Seiten. Eine halbe Stunde Arbeit.'
+        bots_blocked:
+            title: 'KI-Crawler gesperrt: %bots%'
+            text: 'Die robots.txt verbietet diesen Assistenten das Lesen, also können sie die Seite nicht empfehlen.'
+            fix: 'Die Crawler in der robots.txt erlauben, oder bewusst entscheiden, in KI-Antworten nicht vorzukommen.'
+        no_identity_schema:
+            title: 'Betrieb nicht maschinenlesbar'
+            text: 'Ohne Organization-/LocalBusiness-Daten kennt ein Assistent Name, Adresse oder Öffnungszeiten nicht zuverlässig.'
+            fix: 'Strukturierte Daten mit Name, Adresse, Telefon, Öffnungszeiten und Einzugsgebiet ergänzen.'
+        offer_unclear:
+            title: 'Angebot nicht in den ersten Sätzen'
+            text: 'KI-Antworten zitieren die ersten Sätze einer Seite. Auf der Startseite nennen sie das Angebot nicht klar.'
+            fix: 'Die Seite mit einem klaren Satz beginnen: wer Sie sind, was Sie machen, für wen, wo.'
+    good:
+        llms:
+            title: 'llms.txt vorhanden'
+            text: 'KI-Assistenten bekommen eine Zusammenfassung direkt von Ihnen.'
+        bots:
+            title: 'KI-Crawler erlaubt'
+            text: 'GPTBot, ClaudeBot, PerplexityBot und Google-Extended dürfen lesen.'
+        schema:
+            title: 'Betrieb maschinenlesbar'
+            text: 'Strukturierte Daten vom Typ %types% kennzeichnen den Betrieb.'
+        offer:
+            title: 'Angebot früh genannt'
+            text: 'Schon die ersten Sätze sagen, was der Betrieb macht.'
+
+# ---------------------------------------------------------------- Inhalte
+content:
+    summary:
+        good: 'In fünf Sekunden ist klar, was der Betrieb macht, für wen und was der nächste Schritt ist.'
+        ok: 'Verständlich, aber Angebot oder nächster Schritt könnten klarer sein, einzelne Begriffe setzen Vorwissen voraus.'
+        bad: 'Besucher verstehen nicht schnell, was angeboten wird oder wie sie Kontakt aufnehmen. Das kostet Anfragen.'
+    meta:
+        ai: 'KI hat %pages% Seiten gelesen wie ein neuer Besucher'
+        heuristic: 'Heuristische Prüfung (keine KI konfiguriert)'
+    issue:
+        no_cta:
+            title: 'Kein klarer nächster Schritt'
+            text: 'Interessenten sehen nicht auf den ersten Blick, wie sie anrufen, anfragen oder buchen.'
+            fix: 'Eine auffällige Handlung in den ersten Bildschirm: „Anrufen“, „Angebot anfragen“ oder „Buchen“, mit Telefonnummer.'
+        thin:
+            title: 'Sehr wenig Text (%words% Wörter)'
+            text: 'Mit so wenig Text erfahren weder Besucher noch Google, was Sie anbieten.'
+            fix: 'Angebot, Zielgruppe und Standort in zwei, drei kurzen Absätzen beschreiben.'
+        phone:
+            title: 'Telefonnummer nicht antippbar'
+            text: 'Am Handy sollte die Nummer antippbar sein (tel:-Link). Hier fehlt sie oder steht als reiner Text.'
+            fix: 'Die Telefonnummer mit tel:+43… verlinken, im Kopf oder Fuß jeder Seite.'
+    good:
+        cta:
+            title: 'Klarer nächster Schritt'
+            text: 'Besucher sehen, wie sie Kontakt aufnehmen.'
+        length:
+            title: 'Genug Text'
+            text: '%words% Wörter beschreiben das Angebot.'
+        phone:
+            title: 'Telefonnummer antippbar'
+            text: 'Ein Tipp am Handy startet den Anruf.'
+
+# ---------------------------------------------------------------- Recht
+legal:
+    summary:
+        good: 'Impressum, Datenschutzerklärung und Einwilligung sind vorhanden, soweit technisch prüfbar.'
+        ok: 'Impressum und Datenschutzerklärung vorhanden, der Umgang mit Fremddiensten sollte geprüft werden.'
+        bad: 'Impressum oder Datenschutzerklärung fehlen, oder Tracking-Dienste laden vor der Einwilligung. Bitte mit Ihrer Rechtsberatung prüfen.'
+    meta: 'Technische Prüfung, keine Rechtsberatung'
+    note: 'Das ist eine technische Prüfung: Sie sucht die Seiten und die Dienste, die vor einer Einwilligung laden. Keine Rechtsberatung, bitte die Details von Ihrer Rechtsberatung prüfen lassen.'
+    issue:
+        imprint:
+            title: 'Impressum nicht gefunden'
+            text: 'Auf den geprüften Seiten wurde kein Link zu einem Impressum gefunden, oder die Seite ist nicht erreichbar.'
+            fix: 'Von jeder Seite (Fußzeile) ein Impressum mit den Pflichtangaben verlinken.'
+        privacy:
+            title: 'Datenschutzerklärung nicht gefunden'
+            text: 'Es wurde kein Link zu einer Datenschutzerklärung gefunden, oder die Seite ist nicht erreichbar.'
+            fix: 'Die Datenschutzerklärung von jeder Seite (Fußzeile) verlinken, sie muss jeden eingesetzten Dienst nennen.'
+        tracking:
+            title: 'Tracking vor der Einwilligung: %services%'
+            text: 'Diese Dienste laden beim ersten Besuch, bevor der Besucher zustimmen konnte. Nach DSGVO/TKG braucht das eine vorherige Einwilligung.'
+            fix: 'Diese Dienste erst nach Zustimmung im Cookie-Banner laden (oder das Consent-Tool so einstellen, dass es sie blockiert).'
+        embeds:
+            title: 'Fremddienste ohne Consent-Tool: %services%'
+            text: 'Externe Dienste laden ohne Einwilligungs-Banner. Je nach Dienst kann eine Einwilligung nötig sein.'
+            fix: 'Schriften lokal einbinden, Karten und Videos erst nach Klick oder über das Consent-Tool laden.'
+        privacy_in_imprint:
+            title: 'Datenschutzerklärung nur im Impressum'
+            text: 'Die Datenschutzerklärung wurde im Impressum gefunden, nicht auf einer eigenen Seite. Besucher suchen sie meist unter einem eigenen Link „Datenschutz“.'
+            fix: 'Die Datenschutzerklärung auf eine eigene Seite stellen und in der Fußzeile neben dem Impressum verlinken.'
+        terms_empty:
+            title: 'Verlinkte Seite ohne Inhalt: AGB'
+            text: 'Die Website verlinkt AGB, die Seite enthält aber keinen eigenen Text, nur Kopf, Menü und Fußzeile.'
+            fix: 'Den Text einfügen oder den Link entfernen, solange es keinen gibt.'
+        fonts:
+            title: 'Schriften von %services% laden vor der Einwilligung'
+            text: 'Beim ersten Aufruf lädt der Browser Schriften von fremden Servern (%hosts%). Dabei geht die IP-Adresse des Besuchers an den Anbieter, bevor er zustimmen konnte.'
+            fix: 'Die Schriften auf den eigenen Server legen und lokal einbinden, auch dort, wo sie in CSS-Dateien stehen (@import, @font-face).'
+    good:
+        imprint:
+            title: 'Impressum vorhanden'
+            text: 'Verlinkt und erreichbar.'
+        privacy:
+            title: 'Datenschutzerklärung vorhanden'
+            text: 'Verlinkt und erreichbar.'
+        no_third_party:
+            title: 'Keine Fremddienste vor der Einwilligung'
+            text: 'Beim ersten Besuch lädt nichts Externes.'
+        cmp:
+            title: 'Consent-Tool vorhanden'
+            text: 'Ein Cookie-Banner / Consent-Tool wurde gefunden.'
+
+# ---------------------------------------------------------------- Mobil
+mobile:
+    summary:
+        good: 'Passt auf den Handy-Bildschirm, Knöpfe und Schrift sind groß genug.'
+        ok: 'Am Handy benutzbar, einzelne Tippziele oder Schriftgrößen sind zu klein.'
+        bad: 'Am Handy schwer benutzbar: keine Viewport-Einstellung, zu kleine Ziele oder Inhalte breiter als der Bildschirm.'
+        unknown: 'Konnte nicht vollständig gemessen werden (kein PageSpeed-Ergebnis).'
+    meta: 'Viewport, Tippziele, Schriftgröße, Inhaltsbreite'
+    issue:
+        viewport:
+            title: 'Kein mobiler Viewport'
+            text: 'Die Seite wird am Handy als verkleinerte Desktop-Seite angezeigt.'
+            fix: '<meta name="viewport" content="width=device-width, initial-scale=1"> in den Seitenkopf aufnehmen.'
+        targets:
+            title: '%count% Tippziele zu klein'
+            text: 'Links oder Knöpfe sind für den Daumen zu klein oder zu eng beieinander.'
+            fix: 'Die Tippfläche auf mindestens 44 × 44 px vergrößern und Abstand zwischen Links lassen.'
+        font:
+            title: 'Schrift am Handy zu klein'
+            text: '%value% des Textes liegt unter 12 px und ist am Handy schwer lesbar.'
+            fix: 'Für Fließtext mindestens 16 px verwenden.'
+        width:
+            title: 'Inhalt breiter als der Bildschirm'
+            text: 'Besucher müssen seitlich scrollen.'
+            fix: 'Elemente mit fester Breite (Tabellen, Bilder, Einbettungen) mit max-width: 100 % begrenzen.'
+    good:
+        viewport:
+            title: 'Mobiler Viewport gesetzt'
+            text: 'Die Seite passt sich dem Handy-Bildschirm an.'
+        targets:
+            title: 'Tippziele in Ordnung'
+            text: 'Links und Knöpfe sind mit dem Daumen zu treffen.'
+        font:
+            title: 'Text lesbar'
+            text: 'Die Schriftgrößen reichen fürs Handy.'
+# ---------------------------------------------------------------- Server / PHP
+server:
+    source:
+        header: 'Kopfzeilen der Server-Antwort'
+        phpinfo: 'öffentliche phpinfo()-Seite'
+    status:
+        vulnerable:
+            title: 'PHP %version%: von %name% betroffen'
+            text: 'Der Server meldet PHP %version% (Quelle: %source%). Diese Version hat die kritische Lücke %name% (%cves%).'
+        verify:
+            title: 'PHP %version%: Update beim Hoster bestätigen lassen'
+            text: 'Der Server meldet PHP %raw%, vermutlich ein Paket einer Linux-Distribution. Ob die Korrektur für %name% (%cves%) eingespielt ist, ist von außen nicht zu sehen.'
+        eol:
+            title: 'PHP %version%: keine Sicherheitsupdates mehr'
+            text: 'Der Server meldet PHP %version%. Für PHP %branch% schließt das PHP-Projekt keine Lücken mehr.'
+        ok:
+            title: 'PHP %version%: aktuell'
+            text: 'Der Server meldet PHP %version% (Quelle: %source%). Diese Version enthält die Korrektur für %name% (%cves%).'
+        hidden:
+            title: 'PHP-Version nicht sichtbar, nicht prüfbar'
+            text: 'Die Website läuft mit PHP, der Server verrät die Version aber nicht. Das ist so empfohlen und kostet keine Punkte. Ob die Lücke %name% (%cves%) geschlossen ist, kann nur der Hoster sagen: Geschützt sind PHP %fixed% und neuer.'
+        none:
+            title: 'Kein PHP erkannt'
+            text: 'Die Website zeigt keine Spuren von PHP, deshalb wurde keine Version geprüft. Läuft sie doch mit PHP: Geschützt vor %name% sind PHP %fixed% und neuer.'
+    alert:
+        vulnerable:
+            title: 'Kritische Sicherheitslücke auf dem Server: PHP %version%'
+            text: 'Der Server meldet PHP %version%. Diese Version ist von %name% betroffen (%cves%): Angreifer können ohne Anmeldung Programmcode auf dem Server ausführen. Das betrifft nicht nur diese Website, sondern alles auf dem Server, samt Daten und Zugängen. Die Lücke ist öffentlich bekannt. Manche Hoster spielen Korrekturen ein, ohne dass sich die Versionsnummer ändert; das muss der Hoster dann bestätigen.'
+            fix: 'Heute noch den Hoster oder die technische Betreuung bitten, PHP auf %target% oder neuer zu aktualisieren oder schriftlich zu bestätigen, dass die Korrektur eingespielt ist. Danach prüfen lassen, ob der Server bereits angegriffen wurde.'
+        vulnerable_eol:
+            title: 'Kritische Sicherheitslücke auf dem Server: PHP %version%'
+            text: 'Der Server meldet PHP %version%. Für PHP %branch% gibt es keine Sicherheitsupdates mehr, auch nicht gegen %name% (%cves%): Angreifer können ohne Anmeldung Programmcode auf dem Server ausführen. Das betrifft nicht nur diese Website, sondern alles auf dem Server, samt Daten und Zugängen.'
+            fix: 'So bald wie möglich auf PHP %target% oder neuer umsteigen (Website und Erweiterungen vorher testen). Bis dahin beim Hoster nachfragen, ob er die Korrektur selbst eingebaut hat, und prüfen lassen, ob der Server bereits angegriffen wurde.'
+        verify:
+            title: 'Sicherheitsupdate des Servers bestätigen lassen: PHP %version%'
+            text: 'Der Server meldet PHP %raw%, vermutlich ein Paket einer Linux-Distribution. Solche Pakete erhalten Korrekturen oft, ohne dass sich die Versionsnummer ändert, deshalb ist von außen nicht zu sehen, ob die kritische Lücke %name% (%cves%) geschlossen ist. Ist sie offen, können Angreifer ohne Anmeldung Programmcode auf dem ganzen Server ausführen.'
+            fix: 'Beim Hoster bestätigen lassen, dass das Sicherheitsupdate für %cves% eingespielt ist. Sonst PHP auf %target% oder neuer aktualisieren.'
+        eol:
+            title: 'PHP %version% erhält keine Sicherheitsupdates mehr'
+            text: 'Für PHP %branch% schließt das PHP-Projekt keine Lücken mehr. Die bisher bekannten sind behoben, neue bleiben offen, und das betrifft den ganzen Server.'
+            fix: 'Auf PHP %target% oder neuer umsteigen; Website und Erweiterungen vorher auf der neuen Version testen.'
+        phpinfo:
+            title: 'Server-Einstellungen öffentlich lesbar: %path%'
+            text: 'Unter %path% kann jeder eine phpinfo()-Seite aufrufen. Sie zeigt PHP-Version, Module, Verzeichnisse und Einstellungen des Servers, oft auch Zugangsdaten aus Umgebungsvariablen. Angreifer suchen gezielt nach solchen Seiten.'
+            fix: 'Die Datei %path% vom Server löschen. Stehen darin Kennwörter oder Schlüssel, diese ändern.'
+    good:
+        current:
+            title: 'PHP %version% ist aktuell'
+            text: 'Enthält die Korrektur für %name%.'
+
+
+# ---------------------------------------------------------------- Frontend
+fe:
+    status_idle: 'Bereit zur Analyse'
+    status_run: 'Analyse läuft …'
+    status_done: 'Analyse abgeschlossen'
+    preview_idle: 'Hier erscheint Ihre Website'
+    placeholder_domain: 'ihre-firma.at'
+    url_label: 'Adresse Ihrer Website'
+    submit: 'Jetzt prüfen'
+    what_speed: 'Ladezeit am Handy'
+    what_a11y: 'Barrierefreiheit & Kontraste'
+    what_seo: 'Google & KI-Suchen'
+    what_content: 'Texte & nächster Schritt'
+    what_legal: 'Impressum, Datenschutz, Cookies'
+    altcha_label: 'Ich bin ein Mensch'
+    altcha_verifying: 'Prüfung läuft …'
+    altcha_verified: 'Geprüft'
+    altcha_error: 'Die Prüfung ist fehlgeschlagen. Bitte die Seite neu laden.'
+    altcha_wait: 'Die Prüfung läuft noch. Bitte einen Moment warten.'
+    err_url: 'Bitte geben Sie eine gültige Adresse ein, z. B. ihre-firma.at.'
+    err_limit_hour: 'Sie haben in der letzten Stunde schon %limit% Checks gestartet. Bitte versuchen Sie es in einer Stunde wieder.'
+    err_limit: 'Sie haben heute schon %limit% Checks gestartet. Bitte versuchen Sie es morgen wieder.'
+    err_spam: 'Die Spam-Prüfung ist nicht durchgegangen. Bitte die Seite neu laden und noch einmal versuchen.'
+    err_generic: 'Da ist etwas schiefgegangen. Bitte in einem Moment noch einmal versuchen.'
+    err_failed: 'Diese Website konnte nicht geprüft werden (nicht erreichbar oder gesperrt).'
+    err_unavailable: 'Der Website-Check ist gerade nicht verfügbar. Bitte versuchen Sie es später noch einmal.'
+    eta: 'noch etwa %s s'
+    eta_soon: 'gleich fertig …'
+    progress_label: 'Fortschritt der Analyse'
+    step_discover: 'Startseite aufrufen, Sitemap und wichtige Unterseiten finden'
+    step_speed_home: 'Startseite am Handy messen (Google PageSpeed)'
+    step_speed_pages: 'Unterseiten messen'
+    step_analyze: 'Barrierefreiheit, Rechtliches und KI-Sichtbarkeit prüfen'
+    step_ai: 'Texte lesen und Einschätzung formulieren'
+    step_finish: 'Benoten und Bericht zusammenstellen'
+    step_finish_free: 'Benoten und Ergebnis zusammenstellen'
+    gate_title: 'Ihr Ergebnis ist fertig'
+    gate_text: 'Wohin dürfen wir es schicken? Sie sehen es gleich hier und bekommen den PDF-Bericht per E-Mail.'
+    gate_text_free: 'Geben Sie Ihren Namen und Ihre E-Mail-Adresse an, dann sehen Sie es gleich hier.'
+    firstname: 'Vorname'
+    lastname: 'Nachname'
+    email: 'E-Mail'
+    err_firstname: 'Bitte geben Sie Ihren Vornamen an.'
+    err_lastname: 'Bitte geben Sie Ihren Nachnamen an.'
+    err_email: 'Bitte geben Sie eine gültige E-Mail-Adresse an.'
+    newsletter: 'Ja, ich möchte den Newsletter bekommen. Bestätigung per E-Mail, Abmeldung jederzeit.'
+    contact: 'Ja, Sie dürfen mich einmal per E-Mail zu diesem Ergebnis kontaktieren.'
+    optional: '(freiwillig)'
+    gate_legal: 'Ihre Angaben verwenden wir nur, um Ihnen dieses Ergebnis zu senden, und für das, was Sie oben ausdrücklich ankreuzen.'
+    gate_legal_free: 'Ihre Angaben und das Ergebnis gehen an uns; wir verwenden sie nur für diesen Check und für das, was Sie oben ausdrücklich ankreuzen.'
+    privacy: 'Datenschutzerklärung'
+    gate_submit: 'Ergebnis ansehen'
+    result_kicker: 'Ergebnis für'
+    grade_label: 'Gesamtnote %s'
+    mail_sent: 'Kopie an %s unterwegs'
+    mail_failed: 'Die E-Mail konnte nicht gesendet werden, das Ergebnis bleibt hier sichtbar.'
+    gauge_perf: 'Leistung'
+    gauge_a11y: 'Barrierefreiheit'
+    gauge_bp: 'Technik'
+    gauge_seo: 'SEO'
+    measures_title: 'Was zuerst zu ändern ist'
+    strengths_title: 'Was bereits passt'
+    disclaimer: 'Automatische Einschätzung auf Basis von Google PageSpeed Insights, eigenen Prüfungen und einer KI-Lesung. Der PDF-Bericht enthält alle Fundstellen mit Screenshots.'
+    disclaimer_free: 'Automatische Einschätzung auf Basis von Google PageSpeed Insights, eigenen Prüfungen und einer KI-Lesung.'
+    cta: 'Ergebnis besprechen, kostenlos'
+    reset: 'Andere Website prüfen'
+    alert_title_critical: 'Sicherheitslücke auf dem Server gefunden'
+    alert_title_warning: 'Hinweis zur Sicherheit des Servers'
+    alert_more: 'Mehr dazu im PDF-Bericht und in der E-Mail.'
+
+# ---------------------------------------------------------------- Bericht (PDF)
+report:
+    title: 'Website-Check für %domain%'
+    header: 'Website-Check'
+    page: 'Seite %n% von %total%'
+    cover_eyebrow: 'Kostenloser Website-Check'
+    cover_title: 'Ihr Website-Check für'
+    grade_line: 'Gesamtnote %grade% · %word%'
+    grade_short: 'Note %grade% · %word%'
+    meta_pages: 'Geprüfte Seiten'
+    meta_date: 'Datum'
+    meta_for: 'Für'
+    overview_eyebrow: 'Sieben Bereiche, eine Gesamtnote'
+    overview_title: 'Auf einen Blick'
+    legend_title: 'So lesen Sie die Noten'
+    legend: 'Schulnoten. Die Gesamtnote ist nie besser als der schlechteste Bereich plus eins. Hat der Server eine kritische Sicherheitslücke, ist sie nie besser als 4.'
+    measures_eyebrow: 'Was ich zuerst ändern würde'
+    a11y_title: 'Barrierefreiheit & Kontraste'
+    a11y_intro: 'Geprüft mit Lighthouse (dieselben Tests, die Google verwendet) auf der Startseite und den Unterseiten. Markierte Ausschnitte zeigen, wo die Fundstellen liegen.'
+    a11y_no_findings_caption: 'Startseite, Handy. Keine markierten Fundstellen.'
+    contrast_label: 'Kontrast %ratio%:1 · Soll 4,5:1'
+    gauge_sub: 'von 100'
+    gauge_note: 'Google PageSpeed Insights, Startseite am Handy. 90–100 grün, 50–89 orange, unter 50 rot.'
+    a11y_why_title: 'Warum das zählt'
+    a11y_why: 'Rund jeder zwölfte Mann sieht Farben anders, viele Menschen lesen im Sonnenlicht, und ein Knopf, den niemand lesen kann, wird nicht gedrückt.'
+    findings: 'Fundstellen'
+    speed_title: 'Ladezeit & Mobil'
+    speed_intro: 'Gemessen mit Google PageSpeed Insights, Profil „Handy, langsames 4G“, dieselben Zahlen, die Google fürs Ranking heranzieht.'
+    what_works: 'Was gut läuft'
+    what_to_improve: 'Wo noch Luft ist'
+    nothing_to_improve: 'Nichts Nennenswertes, gut gemacht.'
+    pages_eyebrow: '%count% Seiten geprüft'
+    pages_title: 'Geprüfte Seiten'
+    pages_intro: 'Ausgewählt nach Sitemap und Navigation: die Seiten, die Besucher zuerst sehen. Blogbeiträge und rechtliche Unterseiten wurden nicht benotet.'
+    col_page: 'Seite'
+    col_title: 'Titel'
+    col_contrast: 'Kontrast-Fundstellen'
+    col_grade: 'Note'
+    next_eyebrow: 'So geht es weiter'
+    next_title: 'Kleine Schritte, kein Umbau'
+    next_text: 'Die Maßnahmen von Seite 2 kann jede Webagentur oder Ihr bestehender Dienstleister umsetzen. Wenn Sie möchten, gehen wir die Liste gemeinsam durch: 20 Minuten am Telefon, kostenlos, kein Verkaufsgespräch.'
+    next_promise: 'Dieser Bericht ist kostenlos und verpflichtet Sie zu nichts.'
+    sources: 'Quellen: Google PageSpeed Insights (Lighthouse %lighthouse%), eigene Prüfungen von HTML, Rechtlichem und KI-Sichtbarkeit, KI-Lesung der Seitentexte · %date%'
+    page_short: 'Seite'
+    cover_subtitle: 'Ladezeit, Barrierefreiheit, Google und KI-Suchen, Texte, Impressum und Datenschutz: sieben Bereiche, eine Gesamtnote, drei konkrete Maßnahmen.'
+    summary_title: 'Das Ergebnis'
+    measures_title: 'Die wichtigsten Maßnahmen'
+    what_works_short: 'Ladezeit im Detail'
+    pages_eyebrow_plain: 'Geprüfte Seiten'
+    title_plain: 'Website-Check für {{domain}}'
+    header_plain: 'Website-Check · {{date}}'
+    grade_line_plain: 'Gesamtnote {{grade}} · {{grade_word}}'
+    area_grade_line: 'Note {{area_grade}} · {{area_grade_word}}'
+    label_desktop: 'Desktop'
+    label_mobile: 'Mobil'
+    col_lcp: 'LCP'
+    sources_plain: 'Quellen: Google PageSpeed Insights (Lighthouse {{lighthouse}}), eigene Prüfungen von HTML, Rechtlichem und KI-Sichtbarkeit, KI-Lesung der Seitentexte · {{date}}'
+    ai_sections_eyebrow: 'Was uns noch aufgefallen ist'
+    ai_sections_title: 'Weitere Beobachtungen'
+    server_eyebrow: 'Server und PHP'
+    server_title: 'Sicherheit des Servers'
+    server_note: 'Geprüft wird nur, was der Server von außen zeigt: die gemeldete PHP-Version und gängige Testdateien. Es wurde nichts angegriffen oder ausprobiert.'
+    alert_critical: 'Dringend'
+    alert_warning: 'Wichtig'
+    alert_fix: 'Was zu tun ist'
+
+# ---------------------------------------------------------------- E-Mail
+mail:
+    subject: 'Ihr Website-Check für %domain%: Note %grade% · %word%'
+    owner_subject: '[Website-Check] %domain% · Note %grade% · %name% %newsletter%'
+    owner_lead_title: 'Neuer Website-Check angefordert'
+    owner_lead: 'Lead: %name% <%email%> · %domain% · Newsletter: %newsletter%'
+    owner_newsletter: 'Newsletter gewünscht'
+    owner_contact: 'Einmaliger Kontakt erlaubt'
+    owner_areas: 'Noten je Bereich'
+    owner_alert: 'Sicherheitswarnung'
+    owner_errors: 'Schritte mit Fehlern'
+    owner_footer: 'Interne Kopie von Check #%id%. Der Besucher hat denselben Bericht ohne diesen Kopf erhalten.'
+    operator_only: 'Diese E-Mail bekommen nur Sie: Der Besucher hat das Ergebnis auf der Website gesehen und keine E-Mail erhalten (Check #%id%).'
+    greeting: 'Hallo %name%,'
+    intro: 'danke für Ihr Vertrauen. Wir haben %pages% Seiten von %domain% geprüft: Ladezeit am Handy, Barrierefreiheit, Auffindbarkeit bei Google und in KI-Suchen, Texte, Impressum und Cookie-Hinweis.'
+    grade_line: 'Gesamtnote %grade% · %word%.'
+    measures_title: 'Was ich zuerst ändern würde:'
+    pdf_note: 'Der vollständige Bericht mit Screenshots, Messwerten und allen Fundstellen hängt als PDF an, in verständlicher Sprache.'
+    offer: 'Diese Punkte kann jede Webagentur oder Ihr bestehender Dienstleister umsetzen. Wenn Sie möchten, gehen wir die Liste gemeinsam durch: 20 Minuten am Telefon, kostenlos, kein Verkaufsgespräch.'
+    cta: 'Termin für 20 Minuten'
+    cta_alt: 'oder einfach auf diese E-Mail antworten'
+    newsletter_note: 'Sie haben das Newsletter-Häkchen gesetzt. Dafür kommt gleich eine eigene E-Mail mit einem Bestätigungslink, erst nach dem Klick sind Sie angemeldet.'
+    footer: 'Sie erhalten diese E-Mail, weil Sie den Website-Check für %domain% angefordert haben. Ihre Angaben verwenden wir nur für diesen Bericht und löschen sie nach %days% Tagen, sofern Sie nicht den Newsletter abonniert oder eine Anfrage gesendet haben.'
+    greeting_plain: 'Hallo {{firstname}},'
+    intro_plain: 'danke für Ihr Vertrauen. Wir haben {{pages}} Seiten von {{domain}} geprüft: Ladezeit am Handy, Barrierefreiheit, Auffindbarkeit bei Google und in KI-Suchen, Texte, Impressum und Cookie-Hinweis.'
+    short_intro: 'hier ist Ihr Website-Check für {{domain}}. Die Details stehen im angehängten PDF.'
+    footer_plain: 'Sie erhalten diese E-Mail, weil Sie den Website-Check für {{domain}} angefordert haben. Ihre Angaben verwenden wir nur für diesen Bericht und löschen sie nach {{days}} Tagen, sofern Sie nicht den Newsletter abonniert oder eine Anfrage gesendet haben.'
+
+# ---------------------------------------------------------------- Designer (Backend)
+designer:
+    group:
+        content: 'Inhalt'
+        data: 'Daten aus dem Check'
+        layout: 'Layout'
+    ui:
+        blocks: 'Blöcke'
+        structure: 'Aufbau'
+        properties: 'Eigenschaften'
+        theme: 'Design'
+        preview: 'Vorschau'
+        presets: 'Vorlage laden'
+        preset_confirm: 'Die aktuelle Gestaltung wird durch die Vorlage ersetzt. Fortfahren?'
+        add: 'Hinzufügen'
+        duplicate: 'Duplizieren'
+        remove: 'Entfernen'
+        up: 'Nach oben'
+        down: 'Nach unten'
+        empty: 'Noch keine Blöcke. Links einen Block anklicken oder hierher ziehen, oder eine Vorlage laden.'
+        select_hint: 'Block in der Vorschau oder im Aufbau anklicken, um ihn zu bearbeiten.'
+        placeholders: 'Platzhalter'
+        insert_placeholder: 'Platzhalter einfügen'
+        choose_image: 'Bild wählen'
+        upload_image: 'Hochladen'
+        remove_image: 'Bild entfernen'
+        pdf_preview: 'PDF-Vorschau'
+        mail_preview: 'In neuem Tab öffnen'
+        export_twig: 'Als Twig-Vorlage übernehmen'
+        export_confirm: 'Die Twig-Vorlage (Experten-Modus) wird mit dieser Gestaltung überschrieben. Fortfahren?'
+        twig_active: 'Für diese Konfiguration ist im erweiterten Modus Twig-Code hinterlegt. Er hat Vorrang, diese Gestaltung wird dann nicht verwendet. Ändern kann ihn ein Administrator.'
+        loading: 'Vorschau wird erzeugt …'
+        error: 'Die Vorschau konnte nicht erzeugt werden.'
+        bold: 'Fett'
+        italic: 'Kursiv'
+        link: 'Link'
+        link_prompt: 'Adresse des Links (https://…)'
+        list: 'Liste'
+        drag: 'Ziehen zum Verschieben'
+        demo_hint: 'Die Vorschau verwendet den letzten fertigen Check oder Demo-Daten.'
+        labels: 'Bezeichnungen'
+        labels_hint: 'Wörter, die mehrere Blöcke verwenden: Notenwörter, Namen der Bereiche, Aufwand und die Bezeichnungen der Messwerte. Was hier steht, steht im Dokument.'
+        mode_visual: 'Visuell'
+        mode_twig: 'Erweitert (Twig)'
+        mode_label: 'Bearbeitungsmodus'
+        twig_intro: 'Hier steht das komplette Dokument als Twig-Code: Rahmen, jeder Block und jedes Wort. Änderungen wirken sofort in der Vorschau, gespeichert wird mit „Speichern“. Solange hier Code steht, wird er statt der visuellen Gestaltung verwendet.'
+        twig_generate: 'Code aus der visuellen Gestaltung neu erzeugen'
+        twig_generate_confirm: 'Der Twig-Code wird durch die aktuelle visuelle Gestaltung ersetzt. Eigene Änderungen am Code gehen verloren. Fortfahren?'
+        twig_leave_confirm: 'Zurück zum visuellen Modus: Der Twig-Code wird verworfen, ab dann gilt wieder die visuelle Gestaltung. Fortfahren?'
+        twig_error: 'Fehler im Twig-Code'
+        twig_refresh: 'Vorschau aktualisieren'
+    opt:
+        alerts: 'Nur Warnungen'
+        status: 'Nur Ergebnis der PHP-Prüfung'
+        both: 'Warnungen und Ergebnis'
+        none: 'Keine'
+        s: 'Klein'
+        m: 'Mittel'
+        l: 'Groß'
+        xl: 'Sehr groß'
+        soft: 'Hell'
+        primary: 'Hauptfarbe'
+        accent: 'Akzentfarbe'
+        white: 'Weiß'
+        auto: 'Automatisch (aus den Einstellungen)'
+        text: 'Nur Name'
+        h1: 'Überschrift 1'
+        h2: 'Überschrift 2'
+        h3: 'Überschrift 3'
+        normal: 'Normal'
+        muted: 'Dezent'
+        left: 'Links'
+        center: 'Zentriert'
+        right: 'Rechts'
+        montage: 'Desktop und Handy übereinander'
+        desktop: 'Nur Desktop'
+        mobile: 'Nur Handy'
+        side: 'Nebeneinander'
+        cards: 'Karten (zwei Spalten)'
+        list: 'Liste'
+        contact: 'Kontaktseite'
+        website: 'Website'
+        custom: 'Eigene Adresse'
+        outline: 'Umrandet'
+        arimo: 'Arimo (wie Arial)'
+        sans: 'Serifenlos (DejaVu Sans)'
+        serif: 'Serif (DejaVu Serif)'
+        system: 'Helvetica (nur westeuropäische Zeichen)'
+        narrow: 'Schmal'
+        wide: 'Breit'
+        '1': 'Eine Spalte'
+        '2': 'Zwei Spalten'
+        speed: 'Ladezeit'
+        accessibility: 'Barrierefreiheit'
+        seo: 'Auffindbarkeit bei Google'
+        ai: 'Sichtbarkeit in KI-Suchen'
+        content: 'Inhalte & Klarheit'
+        legal: 'Recht & Datenschutz'
+        mobile_area: 'Mobil'
+        effort_small: 'klein'
+        effort_medium: 'mittel'
+        effort_large: 'groß'
+    prop:
+        label_critical: 'Bezeichnung „Dringend“'
+        label_warning: 'Bezeichnung „Wichtig“'
+        label_fix: 'Bezeichnung „Was zu tun ist“'
+        eyebrow: 'Kleine Zeile darüber'
+        title: 'Titel'
+        subtitle: 'Untertitel'
+        text: 'Text'
+        html: 'Text'
+        intro: 'Einleitung'
+        note: 'Hinweis darunter'
+        level: 'Größe'
+        align: 'Ausrichtung'
+        space: 'Abstand danach'
+        bg: 'Hintergrund'
+        size: 'Schriftgröße'
+        tone: 'Farbe'
+        columns: 'Spalten'
+        src: 'Bild'
+        image: 'Eigenes Bild'
+        width: 'Breite'
+        caption: 'Bildunterschrift'
+        rounded: 'Abgerundete Ecken'
+        height: 'Höhe'
+        style: 'Stil'
+        layout: 'Anordnung'
+        legend: 'Notenlegende anzeigen'
+        max: 'Höchstens Einträge'
+        max_issues: 'Höchstens Fundstellen'
+        max_good: 'Höchstens positive Punkte'
+        area: 'Bereich'
+        show_grade: 'Note anzeigen'
+        show_summary: 'Zusammenfassung anzeigen'
+        show_domain: 'Domain anzeigen'
+        show_meta: 'Seiten, Datum, Empfänger anzeigen'
+        show_screens: 'Screenshots anzeigen'
+        show_pages: 'Geprüfte Seiten'
+        show_date: 'Datum'
+        show_for: 'Empfänger'
+        show_effort: 'Aufwand anzeigen'
+        show_crops: 'Markierte Ausschnitte anzeigen'
+        show_kpis: 'Messwerte anzeigen'
+        show_portrait: 'Porträtfoto anzeigen'
+        show_contact: 'Kontaktzeile anzeigen'
+        logo: 'Logo'
+        tagline: 'Zeile rechts'
+        label: 'Beschriftung'
+        target: 'Ziel'
+        url: 'Eigene Adresse'
+        alt: 'Text neben dem Knopf'
+        promise: 'Zusage im Kontaktkasten'
+        perf: 'Leistung'
+        a11y: 'Barrierefreiheit'
+        bp: 'Technik'
+        seo: 'SEO'
+        grade_line: 'Zeile zur Note'
+        label_pages: 'Bezeichnung „Geprüfte Seiten“'
+        label_date: 'Bezeichnung „Datum“'
+        label_for: 'Bezeichnung „Für“'
+        label_desktop: 'Bezeichnung Desktop'
+        label_mobile: 'Bezeichnung Handy'
+        label_perf: 'Bezeichnung Leistung'
+        label_a11y: 'Bezeichnung Barrierefreiheit'
+        label_bp: 'Bezeichnung Technik'
+        label_seo: 'Bezeichnung SEO'
+        legend_title: 'Titel der Legende'
+        legend_text: 'Text der Legende'
+        works_title: 'Titel „Was gut läuft“'
+        improve_title: 'Titel „Wo noch Luft ist“'
+        nothing_text: 'Text, wenn nichts zu verbessern ist'
+        col_page: 'Spalte Seite'
+        col_title: 'Spalte Titel'
+        col_lcp: 'Spalte Ladezeit'
+        col_contrast: 'Spalte Kontrast'
+        col_grade: 'Spalte Note'
+        none_text: 'Wort für „keine“'
+        badge: 'Kürzel im Kästchen'
+        max_crops: 'Markierte Ausschnitte höchstens'
+        show_intro: 'Einleitung anzeigen'
+    theme:
+        doc_title: 'Dokumenttitel (PDF-Eigenschaften)'
+        page_label: 'Wort vor der Seitenzahl'
+        grade_word: 'Notenwort %s'
+        area_name: 'Bereich: %s'
+        effort_word: 'Aufwand %s'
+        kpi_name: 'Messwert: %s'
+        kpi_note: 'Hinweis zu: %s'
+        primary: 'Hauptfarbe (leer = Einstellungen)'
+        accent: 'Akzentfarbe (leer = Einstellungen)'
+        text: 'Textfarbe'
+        soft: 'Helle Flächen'
+        font: 'Schrift'
+        radius: 'Rundung'
+        margins: 'Seitenränder'
+        header: 'Kopfzeile auf jeder Seite'
+        header_text: 'Text in der Kopfzeile'
+        footer: 'Fußzeile auf jeder Seite'
+        footer_text: 'Text in der Fußzeile'
+        page_numbers: 'Seitenzahlen'
+        outer: 'Hintergrund um die E-Mail'
+        size: 'Grundschriftgröße'
+    preset:
+        pdf:
+            standard: 'Standard (Deckblatt mit Note, alle Bereiche)'
+            cover: 'Mit Deckblatt (Deckblatt in Hauptfarbe, Ergebnis auf Seite 2)'
+            compact: 'Kompakt (eine Seite)'
+        mail:
+            standard: 'Standard (Note, Maßnahmen, PDF-Hinweis, Knopf)'
+            short: 'Kurz (Note, PDF-Hinweis, Knopf)'
+    block:
+        security: {label: 'Server-Sicherheit', desc: 'Warnungen zum Server, etwa eine PHP-Version mit bekannter Lücke, und das Ergebnis der PHP-Prüfung. Fehlt der Block, stehen Warnungen automatisch nach dem Deckblatt bzw. dem Kopf.', mode: 'Inhalt'}
+        cover: {label: 'Deckblatt', desc: 'Logo, Titel, Domain, optional Note, Kennzahlen und Screenshots. Danach beginnt eine neue Seite.'}
+        heading: {label: 'Überschrift', desc: 'Überschrift mit optionaler kleiner Zeile darüber.'}
+        text: {label: 'Text', desc: 'Fließtext mit Platzhaltern, optional auf farbiger Fläche.'}
+        image: {label: 'Bild', desc: 'Eigenes Bild aus der Dateiverwaltung oder hochgeladen.'}
+        note: {label: 'Hinweis', desc: 'Kleiner Text mit Randlinie.'}
+        next_steps: {label: 'So geht es weiter', desc: 'Ihr Angebot mit Kontaktkasten, Porträt und Telefon.'}
+        signature: {label: 'Signatur', desc: 'Name, Firma, Telefon, optional Porträt.'}
+        grade_box: {label: 'Gesamtnote', desc: 'Große Note mit Notenwort und Zusammenfassung.'}
+        meta_cards: {label: 'Kennzahlen', desc: 'Geprüfte Seiten, Datum, Empfänger.'}
+        screenshots: {label: 'Screenshots', desc: 'Startseite am Desktop und am Handy.'}
+        gauges: {label: 'Google-Ringe', desc: 'Die PageSpeed-Werte als Ringe, optional mit Messwerten.'}
+        areas: {label: 'Bereiche im Überblick', desc: 'Die sieben Bereiche mit Note und Kurztext.', show_meta: 'Messdetails anzeigen'}
+        measures: {label: 'Maßnahmen', desc: 'Die wichtigsten Maßnahmen, nummeriert, mit Aufwand.'}
+        strengths: {label: 'Was bereits passt', desc: 'Positive Punkte als Häkchenliste.'}
+        area_detail: {label: 'Bereich im Detail', desc: 'Ein Bereich mit Fundstellen, positiven Punkten, bei Barrierefreiheit mit markierten Ausschnitten.'}
+        kpis: {label: 'Messwerte Ladezeit', desc: 'LCP, CLS, INP, Leistung, Seitengewicht, Anfragen.'}
+        ai_sections: {label: 'KI-Abschnitte', desc: 'Themen, die die KI zusätzlich zu den sieben Bereichen gefunden hat (z. B. Preise, Buchung, Vertrauen). Erscheint nur, wenn es etwas zu sagen gibt.'}
+        pages_table: {label: 'Tabelle der Seiten', desc: 'Alle geprüften Seiten mit Titel, LCP, Kontrast und Note.'}
+        sources: {label: 'Quellen', desc: 'Quellenhinweis, Platzhalter {{lighthouse}} und {{date}}.'}
+        spacer: {label: 'Abstand', desc: 'Leerraum.'}
+        divider: {label: 'Trennlinie', desc: ''}
+        page_break: {label: 'Seitenumbruch', desc: 'Der nächste Block beginnt auf einer neuen Seite.'}
+        header: {label: 'Kopf', desc: 'Farbiger Kopf mit Logo oder Firmenname.'}
+        button: {label: 'Knopf', desc: 'Aufruf zum Handeln, z. B. Termin vereinbaren.'}
+        pdf_note: {label: 'PDF-Hinweis', desc: 'Hinweis auf den Anhang, nur wenn ein PDF dabei ist.'}
+        newsletter_note: {label: 'Newsletter-Hinweis', desc: 'Nur sichtbar, wenn der Besucher das Häkchen gesetzt hat.'}
+        footer: {label: 'Fußzeile', desc: 'Grauer Abschluss mit Datenschutzhinweis.'}
+
+# Typografie der Berichtssprache (Anführungszeichen um zitierte Stellen)
+format:
+    quote_open: "„"
+    quote_close: "“"
