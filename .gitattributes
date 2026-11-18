@@ -1,4 +1,11 @@
-# Development only: not in the archive customers download
-/tests export-ignore
-/phpunit.xml.dist export-ignore
+# Not part of the installed package (Composer dist archive, git archive)
+/.editorconfig export-ignore
+/.gitattributes export-ignore
 /.github export-ignore
+/.gitignore export-ignore
+/.idea export-ignore
+/.vscode export-ignore
+/dev export-ignore
+/phpunit.xml.dist export-ignore
+/tests export-ignore
+/tools export-ignore
